@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Master Data Structures & Algorithms with intelligent spaced repetition, progress tracking, and performance analytics">
+    <meta name="keywords" content="DSA, Data Structures, Algorithms, Coding Practice, Interview Prep, LeetCode">
+    <meta name="author" content="DSA Tracker">
+    <meta name="robots" content="index, follow">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    <title>DSA Master Tracker - Smart Learning with Spaced Repetition</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Login Page */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-box h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .login-box p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 28px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn-logout, .btn-export, .btn-import {
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-logout {
+            background: #ff4757;
+        }
+
+        .btn-logout:hover {
+            background: #ff3838;
+            transform: translateY(-2px);
+        }
+
+        .btn-export {
+            background: #2ecc71;
+        }
+
+        .btn-export:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+        }
+
+        .btn-import {
+            background: #3498db;
+            display: inline-block;
+        }
+
+        .btn-import:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card h3 {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .stat-card .number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-card small {
+            font-size: 12px;
+            color: #999;
+            display: block;
+            margin-top: 5px;
+        }
+
+        /* Problem Form */
+        .problem-form {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .problem-form h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 10px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-add {
+            flex: 1;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-add:hover {
+            background: #5568d3;
+        }
+
+        .btn-cancel {
+            flex: 1;
+            padding: 12px;
+            background: #95a5a6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-cancel:hover {
+            background: #7f8c8d;
+        }
+
+        /* Filters */
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .filters h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-clear-filters {
+            padding: 6px 12px;
+            background: #95a5a6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .btn-clear-filters:hover {
+            background: #7f8c8d;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        /* Problems Table */
+        .problems-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+
+        .problems-container h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        thead {
+            background: #f8f9fa;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        tbody tr {
+            transition: background 0.2s;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .difficulty-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .difficulty-easy {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .difficulty-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .difficulty-hard {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-solved {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            color: #ffc107;
+            font-weight: 600;
+        }
+
+        .revision-needed {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-edit,
+        .btn-delete {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-edit {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #138496;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c82333;
+        }
+
+        .link-btn {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .link-btn:hover {
+            color: #5568d3;
+            text-decoration: underline;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .problems-container {
+                padding: 15px;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-card .number {
+                font-size: 28px;
+            }
+        }
+        
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification-success {
+            background: #2ecc71;
+        }
+        
+        .notification-error {
+            background: #e74c3c;
+        }
+        
+        .notification-info {
+            background: #3498db;
+        }
+        
+        /* Review Section */
+        .review-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .review-section h2 {
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+        
+        .review-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        
+        .review-card {
+            background: #fff5f5;
+            border: 2px solid #e74c3c;
+            border-radius: 10px;
+            padding: 15px;
+            transition: transform 0.2s;
+        }
+        
+        .review-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .review-card h4 {
+            color: #e74c3c;
+            margin-bottom: 8px;
+        }
+        
+        .review-info {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .btn-review {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .btn-review:hover {
+            background: #c0392b;
+        }
+        
+        /* Analytics Section */
+        .analytics-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .analytics-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .chart-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .chart-container h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .topic-stats, .difficulty-stats, .weak-areas {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .stat-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .stat-bar.weak {
+            border-left-color: #e74c3c;
+            background: #fff5f5;
+        }
+        
+        .stat-bar.good {
+            border-left-color: #27ae60;
+            background: #f0fff4;
+        }
+        
+        .progress-bar {
+            width: 100px;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #667eea;
+            transition: width 0.3s;
+        }
+        
+        .progress-fill.weak {
+            background: #e74c3c;
+        }
+        
+        .progress-fill.good {
+            background: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <h1>🚀 DSA Tracker</h1>
+            <p>Master your coding journey</p>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter your username" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎯 DSA Master Tracker</h1>
+            <div class="user-info">
+                <span>Welcome, <strong id="displayUsername"></strong></span>
+                <button class="btn-export" onclick="exportData()" title="Export your data">📥 Export</button>
+                <label class="btn-import" title="Import data">
+                    📤 Import
+                    <input type="file" accept=".json" onchange="importData(event)" style="display: none;">
+                </label>
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Problems</h3>
+                <div class="number" id="totalProblems">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Solved</h3>
+                <div class="number" id="solvedProblems">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Due for Review</h3>
+                <div class="number" id="dueForReview">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Daily Streak</h3>
+                <div class="number" id="dailyStreak">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Avg Solve Time</h3>
+                <div class="number" id="avgSolveTime">0</div>
+                <small>minutes</small>
+            </div>
+            <div class="stat-card">
+                <h3>Success Rate</h3>
+                <div class="number" id="successRate">0</div>
+                <small>%</small>
+            </div>
+        </div>
+
+        <!-- Due for Review Section -->
+        <div id="reviewSection" class="review-section" style="display: none;">
+            <h2>🔄 Due for Review Today</h2>
+            <div id="reviewProblems" class="review-grid"></div>
+        </div>
+
+        <!-- Analytics Dashboard -->
+        <div class="analytics-section">
+            <h2>📊 Analytics Dashboard</h2>
+            <div class="analytics-grid">
+                <div class="chart-container">
+                    <h3>Progress This Week</h3>
+                    <canvas id="weeklyChart" width="400" height="200"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Topic Performance</h3>
+                    <div id="topicStats" class="topic-stats"></div>
+                </div>
+                <div class="chart-container">
+                    <h3>Difficulty Breakdown</h3>
+                    <div id="difficultyStats" class="difficulty-stats"></div>
+                </div>
+                <div class="chart-container">
+                    <h3>Weak Areas</h3>
+                    <div id="weakAreas" class="weak-areas"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem Form -->
+        <div class="problem-form">
+            <h2 id="formTitle">➕ Add New Problem</h2>
+            <form id="problemForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="problemName">Problem Name *</label>
+                        <input type="text" id="problemName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pattern">Pattern *</label>
+                        <input type="text" id="pattern" placeholder="e.g., Two Pointers, Sliding Window" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="topic">Topic *</label>
+                        <select id="topic" required>
+                            <option value="">Select Topic</option>
+                            <option value="Arrays">Arrays</option>
+                            <option value="Hashing">Hashing</option>
+                            <option value="Two Pointers">Two Pointers</option>
+                            <option value="Sliding Window">Sliding Window</option>
+                            <option value="Strings">Strings</option>
+                            <option value="Stack">Stack</option>
+                            <option value="Queue">Queue</option>
+                            <option value="Linked List">Linked List</option>
+                            <option value="Binary Search">Binary Search</option>
+                            <option value="Trees">Trees</option>
+                            <option value="Graphs">Graphs</option>
+                            <option value="Dynamic Programming">Dynamic Programming</option>
+                            <option value="Backtracking">Backtracking</option>
+                            <option value="Heaps">Heaps</option>
+                            <option value="Trie">Trie</option>
+                            <option value="Greedy">Greedy</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="difficulty">Difficulty *</label>
+                        <select id="difficulty" required>
+                            <option value="">Select Difficulty</option>
+                            <option value="Easy">Easy</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Hard">Hard</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="link">Problem Link</label>
+                        <input type="url" id="link" placeholder="https://leetcode.com/problems/...">
+                    </div>
+                    <div class="form-group">
+                        <label for="timeTaken">Time Taken (minutes)</label>
+                        <input type="number" id="timeTaken" min="0" placeholder="e.g., 30">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Notes</label>
+                    <textarea id="notes" placeholder="Key insights, approach, mistakes made..."></textarea>
+                </div>
+                <div class="form-grid">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="solvedAlone">
+                        <label for="solvedAlone">Solved without hints</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="needRevision">
+                        <label for="needRevision">Need revision</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="confidence">Confidence Level</label>
+                        <select id="confidence">
+                            <option value="1">1 - Need to learn</option>
+                            <option value="2">2 - Somewhat familiar</option>
+                            <option value="3" selected>3 - Comfortable</option>
+                            <option value="4">4 - Very confident</option>
+                            <option value="5">5 - Expert level</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-add">Add Problem</button>
+                    <button type="button" class="btn-cancel" onclick="resetForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters">
+            <h3>
+                🔍 Filter & Search
+                <button class="btn-clear-filters" onclick="clearFilters()">Clear All</button>
+            </h3>
+            <div class="filter-grid">
+                <div class="form-group">
+                    <label for="filterTopic">Filter by Topic</label>
+                    <select id="filterTopic" onchange="filterProblems()">
+                        <option value="">All Topics</option>
+                        <option value="Arrays">Arrays</option>
+                        <option value="Hashing">Hashing</option>
+                        <option value="Two Pointers">Two Pointers</option>
+                        <option value="Sliding Window">Sliding Window</option>
+                        <option value="Strings">Strings</option>
+                        <option value="Stack">Stack</option>
+                        <option value="Queue">Queue</option>
+                        <option value="Linked List">Linked List</option>
+                        <option value="Binary Search">Binary Search</option>
+                        <option value="Trees">Trees</option>
+                        <option value="Graphs">Graphs</option>
+                        <option value="Dynamic Programming">Dynamic Programming</option>
+                        <option value="Backtracking">Backtracking</option>
+                        <option value="Heaps">Heaps</option>
+                        <option value="Trie">Trie</option>
+                        <option value="Greedy">Greedy</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="filterDifficulty">Filter by Difficulty</label>
+                    <select id="filterDifficulty" onchange="filterProblems()">
+                        <option value="">All Difficulties</option>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="filterStatus">Filter by Status</label>
+                    <select id="filterStatus" onchange="filterProblems()">
+                        <option value="">All Status</option>
+                        <option value="solved">Solved</option>
+                        <option value="pending">Pending</option>
+                        <option value="revision">Need Revision</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="searchProblem">Search Problem</label>
+                    <input type="text" id="searchProblem" placeholder="Search by name or pattern" oninput="filterProblems()">
+                </div>
+            </div>
+        </div>
+
+        <!-- Problems Table -->
+        <div class="problems-container">
+            <h2>📝 Your Problem List</h2>
+            <div id="tableContainer">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Problem</th>
+                            <th>Pattern</th>
+                            <th>Topic</th>
+                            <th>Difficulty</th>
+                            <th>Status</th>
+                            <th>Time</th>
+                            <th>Notes</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="problemsTable">
+                        <tr>
+                            <td colspan="8" class="empty-state">
+                                <h3>No problems added yet</h3>
+                                <p>Start adding problems to track your progress!</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let problems = [];
+        let editingId = null;
+        let currentUser = '';
+        let userStats = {};
+        
+        // Spaced repetition intervals in days
+        const REVIEW_INTERVALS = [1, 3, 7, 14, 30];
+
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username && password) {
+                currentUser = username;
+                document.getElementById('displayUsername').textContent = username;
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                loadProblems();
+            }
+        });
+
+        // Logout
+        function logout() {
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('loginForm').reset();
+            currentUser = '';
+            problems = [];
+            editingId = null;
+        }
+
+        // Load problems from memory
+        function loadProblems() {
+            try {
+                problems = JSON.parse(localStorage.getItem('dsaProblems_' + currentUser) || '[]');
+                userStats = JSON.parse(localStorage.getItem('dsaStats_' + currentUser) || '{}');
+                initializeUserStats();
+                updateSpacedRepetition();
+                renderProblems();
+                updateStats();
+                renderAnalytics();
+                checkDailyStreak();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                problems = [];
+                userStats = {};
+                initializeUserStats();
+                showNotification('Error loading data. Starting fresh.', 'error');
+            }
+        }
+
+        // Save problems to memory
+        function saveProblems() {
+            try {
+                localStorage.setItem('dsaProblems_' + currentUser, JSON.stringify(problems));
+                localStorage.setItem('dsaStats_' + currentUser, JSON.stringify(userStats));
+            } catch (error) {
+                console.error('Error saving data:', error);
+                showNotification('Error saving data. Please try again.', 'error');
+            }
+        }
+
+        // Add/Edit Problem
+        document.getElementById('problemForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Validate required fields
+            const name = document.getElementById('problemName').value.trim();
+            const pattern = document.getElementById('pattern').value.trim();
+            const topic = document.getElementById('topic').value;
+            const difficulty = document.getElementById('difficulty').value;
+            
+            if (!name || !pattern || !topic || !difficulty) {
+                showNotification('Please fill in all required fields!', 'error');
+                return;
+            }
+            
+            // Check for duplicate problems
+            const isDuplicate = problems.some(p => 
+                p.id !== editingId && 
+                p.name.toLowerCase() === name.toLowerCase() && 
+                p.topic === topic
+            );
+            
+            if (isDuplicate) {
+                showNotification('Problem with this name already exists in this topic!', 'error');
+                return;
+            }
+            
+            const confidence = parseInt(document.getElementById('confidence').value);
+            const timeTaken = parseInt(document.getElementById('timeTaken').value) || 0;
+            
+            const problem = {
+                id: editingId || Date.now(),
+                name: name,
+                pattern: pattern,
+                topic: topic,
+                difficulty: difficulty,
+                link: document.getElementById('link').value.trim(),
+                timeTaken: timeTaken,
+                notes: document.getElementById('notes').value.trim(),
+                solvedAlone: document.getElementById('solvedAlone').checked,
+                needRevision: document.getElementById('needRevision').checked,
+                confidence: confidence,
+                date: editingId ? problems.find(p => p.id === editingId).date : new Date().toLocaleDateString(),
+                lastReviewed: new Date().toISOString(),
+                reviewCount: editingId ? problems.find(p => p.id === editingId).reviewCount || 0 : 0,
+                nextReview: calculateNextReview(confidence, 0)
+            };
+            
+            // Update daily stats
+            updateDailyStats(problem, editingId);
+
+            if (editingId) {
+                const index = problems.findIndex(p => p.id === editingId);
+                problems[index] = problem;
+                editingId = null;
+                document.getElementById('formTitle').textContent = '➕ Add New Problem';
+                document.querySelector('.btn-add').textContent = 'Add Problem';
+            } else {
+                problems.unshift(problem);
+            }
+
+            saveProblems();
+            renderProblems();
+            updateStats();
+            resetForm();
+            
+            // Show success message and update analytics
+            const message = editingId ? 'Problem updated successfully!' : 'Problem added successfully!';
+            showNotification(message, 'success');
+            renderAnalytics();
+        });
+
+        // Reset Form
+        function resetForm() {
+            document.getElementById('problemForm').reset();
+            document.getElementById('confidence').value = '3';
+            editingId = null;
+            document.getElementById('formTitle').textContent = '➕ Add New Problem';
+            document.querySelector('.btn-add').textContent = 'Add Problem';
+        }
+        
+        // Check if problem is due for review
+        function isDueForReview(problem) {
+            if (!problem.nextReview || !problem.solvedAlone) return false;
+            const today = new Date();
+            const reviewDate = new Date(problem.nextReview);
+            return reviewDate <= today;
+        }
+
+        // Edit Problem
+        function editProblem(id) {
+            const problem = problems.find(p => p.id === id);
+            if (problem) {
+                editingId = id;
+                document.getElementById('problemName').value = problem.name;
+                document.getElementById('pattern').value = problem.pattern;
+                document.getElementById('topic').value = problem.topic;
+                document.getElementById('difficulty').value = problem.difficulty;
+                document.getElementById('link').value = problem.link;
+                document.getElementById('timeTaken').value = problem.timeTaken;
+                document.getElementById('notes').value = problem.notes;
+                document.getElementById('solvedAlone').checked = problem.solvedAlone;
+                document.getElementById('needRevision').checked = problem.needRevision;
+                document.getElementById('confidence').value = problem.confidence || 3;
+                document.getElementById('formTitle').textContent = '✏️ Edit Problem';
+                document.querySelector('.btn-add').textContent = 'Update Problem';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Delete Problem
+        function deleteProblem(id) {
+            if (confirm('Are you sure you want to delete this problem?')) {
+                const problemName = problems.find(p => p.id === id)?.name || 'Problem';
+                problems = problems.filter(p => p.id !== id);
+                saveProblems();
+                renderProblems();
+                updateStats();
+                showNotification(`"${problemName}" deleted successfully!`, 'info');
+            }
+        }
+
+        // Update Stats
+        function updateStats() {
+            const total = problems.length;
+            const solved = problems.filter(p => p.solvedAlone).length;
+            const dueForReview = getDueForReviewProblems().length;
+            const avgTime = calculateAverageTime();
+            const successRate = total > 0 ? Math.round((solved / total) * 100) : 0;
+            const streak = userStats.currentStreak || 0;
+
+            document.getElementById('totalProblems').textContent = total;
+            document.getElementById('solvedProblems').textContent = solved;
+            document.getElementById('dueForReview').textContent = dueForReview;
+            document.getElementById('dailyStreak').textContent = streak;
+            document.getElementById('avgSolveTime').textContent = avgTime;
+            document.getElementById('successRate').textContent = successRate;
+            
+            // Show/hide review section
+            const reviewSection = document.getElementById('reviewSection');
+            if (dueForReview > 0) {
+                reviewSection.style.display = 'block';
+                renderReviewProblems();
+            } else {
+                reviewSection.style.display = 'none';
+            }
+        }
+
+        // Render Problems
+        function renderProblems() {
+            const tbody = document.getElementById('problemsTable');
+            
+            if (problems.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="empty-state">
+                            <h3>No problems added yet</h3>
+                            <p>Start adding problems to track your progress!</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = problems.map(p => `
+                <tr>
+                    <td>
+                        ${p.link ? `<a href="${p.link}" target="_blank" class="link-btn" rel="noopener">${escapeHtml(p.name)}</a>` : escapeHtml(p.name)}
+                    </td>
+                    <td>${escapeHtml(p.pattern)}</td>
+                    <td>${escapeHtml(p.topic)}</td>
+                    <td><span class="difficulty-badge difficulty-${p.difficulty.toLowerCase()}">${p.difficulty}</span></td>
+                    <td>
+                        ${p.solvedAlone ? '<span class="status-solved">✓ Solved</span>' : '<span class="status-pending">⏳ Pending</span>'}
+                        ${p.needRevision ? '<br><span class="revision-needed">🔄 Revision</span>' : ''}
+                        ${isDueForReview(p) ? '<br><span class="revision-needed">⏰ Due Review</span>' : ''}
+                    </td>
+                    <td>${p.timeTaken ? p.timeTaken + ' min' : '-'}</td>
+                    <td>${p.notes ? escapeHtml(p.notes.substring(0, 50)) + (p.notes.length > 50 ? '...' : '') : '-'}</td>
+                    <td class="actions">
+                        <button class="btn-edit" onclick="editProblem(${p.id})">Edit</button>
+                        <button class="btn-delete" onclick="deleteProblem(${p.id})">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Filter Problems
+        function filterProblems() {
+            const topic = document.getElementById('filterTopic').value.toLowerCase();
+            const difficulty = document.getElementById('filterDifficulty').value.toLowerCase();
+            const status = document.getElementById('filterStatus').value;
+            const search = document.getElementById('searchProblem').value.toLowerCase();
+
+            const filtered = problems.filter(p => {
+                const matchTopic = !topic || p.topic.toLowerCase() === topic;
+                const matchDifficulty = !difficulty || p.difficulty.toLowerCase() === difficulty;
+                const matchStatus = !status || 
+                    (status === 'solved' && p.solvedAlone) ||
+                    (status === 'pending' && !p.solvedAlone) ||
+                    (status === 'revision' && p.needRevision);
+                const matchSearch = !search || 
+                    p.name.toLowerCase().includes(search) ||
+                    p.pattern.toLowerCase().includes(search);
+
+                return matchTopic && matchDifficulty && matchStatus && matchSearch;
+            });
+
+            const tbody = document.getElementById('problemsTable');
+            
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="empty-state">
+                            <h3>No problems found</h3>
+                            <p>Try adjusting your filters</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(p => `
+                <tr>
+                    <td>
+                        ${p.link ? `<a href="${p.link}" target="_blank" class="link-btn" rel="noopener">${escapeHtml(p.name)}</a>` : escapeHtml(p.name)}
+                    </td>
+                    <td>${escapeHtml(p.pattern)}</td>
+                    <td>${escapeHtml(p.topic)}</td>
+                    <td><span class="difficulty-badge difficulty-${p.difficulty.toLowerCase()}">${p.difficulty}</span></td>
+                    <td>
+                        ${p.solvedAlone ? '<span class="status-solved">✓ Solved</span>' : '<span class="status-pending">⏳ Pending</span>'}
+                        ${p.needRevision ? '<br><span class="revision-needed">🔄 Revision</span>' : ''}
+                        ${isDueForReview(p) ? '<br><span class="revision-needed">⏰ Due Review</span>' : ''}
+                    </td>
+                    <td>${p.timeTaken ? p.timeTaken + ' min' : '-'}</td>
+                    <td>${p.notes ? escapeHtml(p.notes.substring(0, 50)) + (p.notes.length > 50 ? '...' : '') : '-'}</td>
+                    <td class="actions">
+                        <button class="btn-edit" onclick="editProblem(${p.id})">Edit</button>
+                        <button class="btn-delete" onclick="deleteProblem(${p.id})">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Clear all filters
+        function clearFilters() {
+            document.getElementById('filterTopic').value = '';
+            document.getElementById('filterDifficulty').value = '';
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('searchProblem').value = '';
+            renderProblems();
+        }
+
+        // Export data
+        function exportData() {
+            const data = {
+                user: currentUser,
+                problems: problems,
+                exportDate: new Date().toISOString()
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `dsa-tracker-${currentUser}-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Import data
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.problems && Array.isArray(data.problems)) {
+                        if (confirm('This will replace all your current data. Continue?')) {
+                            problems = data.problems;
+                            saveProblems();
+                            renderProblems();
+                            updateStats();
+                            showNotification('Data imported successfully!', 'success');
+                        }
+                    } else {
+                        showNotification('Invalid file format!', 'error');
+                    }
+                } catch (error) {
+                    showNotification('Error reading file!', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Trigger animation
+            setTimeout(() => notification.classList.add('show'), 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => document.body.removeChild(notification), 300);
+            }, 3000);
+        }
+
+        // Initialize user stats
+        function initializeUserStats() {
+            if (!userStats.dailyStats) userStats.dailyStats = {};
+            if (!userStats.currentStreak) userStats.currentStreak = 0;
+            if (!userStats.longestStreak) userStats.longestStreak = 0;
+            if (!userStats.lastActiveDate) userStats.lastActiveDate = null;
+        }
+        
+        // Calculate next review date
+        function calculateNextReview(confidence, reviewCount) {
+            const baseInterval = REVIEW_INTERVALS[Math.min(reviewCount, REVIEW_INTERVALS.length - 1)];
+            const confidenceMultiplier = confidence / 3; // 1-5 scale normalized
+            const interval = Math.round(baseInterval * confidenceMultiplier);
+            
+            const nextReview = new Date();
+            nextReview.setDate(nextReview.getDate() + interval);
+            return nextReview.toISOString();
+        }
+        
+        // Update spaced repetition
+        function updateSpacedRepetition() {
+            const today = new Date().toISOString().split('T')[0];
+            problems.forEach(problem => {
+                if (!problem.nextReview) {
+                    problem.nextReview = calculateNextReview(problem.confidence || 3, 0);
+                }
+            });
+        }
+        
+        // Get problems due for review
+        function getDueForReviewProblems() {
+            const today = new Date();
+            return problems.filter(p => {
+                if (!p.nextReview || !p.solvedAlone) return false;
+                const reviewDate = new Date(p.nextReview);
+                return reviewDate <= today;
+            });
+        }
+        
+        // Render review problems
+        function renderReviewProblems() {
+            const dueProblems = getDueForReviewProblems();
+            const container = document.getElementById('reviewProblems');
+            
+            container.innerHTML = dueProblems.map(p => `
+                <div class="review-card">
+                    <h4>${escapeHtml(p.name)}</h4>
+                    <div class="review-info">
+                        <span>${p.topic} • ${p.difficulty}</span><br>
+                        <span>Last reviewed: ${new Date(p.lastReviewed).toLocaleDateString()}</span>
+                    </div>
+                    <button class="btn-review" onclick="markAsReviewed(${p.id})">Mark as Reviewed</button>
+                </div>
+            `).join('');
+        }
+        
+        // Mark problem as reviewed
+        function markAsReviewed(id) {
+            const problem = problems.find(p => p.id === id);
+            if (problem) {
+                problem.reviewCount = (problem.reviewCount || 0) + 1;
+                problem.lastReviewed = new Date().toISOString();
+                problem.nextReview = calculateNextReview(problem.confidence || 3, problem.reviewCount);
+                
+                saveProblems();
+                updateStats();
+                showNotification(`"${problem.name}" scheduled for next review!`, 'success');
+            }
+        }
+        
+        // Update daily stats
+        function updateDailyStats(problem, isEdit) {
+            const today = new Date().toISOString().split('T')[0];
+            
+            if (!userStats.dailyStats[today]) {
+                userStats.dailyStats[today] = {
+                    problemsSolved: 0,
+                    timeSpent: 0,
+                    topics: {},
+                    difficulties: { Easy: 0, Medium: 0, Hard: 0 }
+                };
+            }
+            
+            const todayStats = userStats.dailyStats[today];
+            
+            if (!isEdit && problem.solvedAlone) {
+                todayStats.problemsSolved++;
+                todayStats.timeSpent += problem.timeTaken || 0;
+                todayStats.topics[problem.topic] = (todayStats.topics[problem.topic] || 0) + 1;
+                todayStats.difficulties[problem.difficulty]++;
+            }
+        }
+        
+        // Check and update daily streak
+        function checkDailyStreak() {
+            const today = new Date().toISOString().split('T')[0];
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayStr = yesterday.toISOString().split('T')[0];
+            
+            const todayStats = userStats.dailyStats[today];
+            const hasActivityToday = todayStats && todayStats.problemsSolved > 0;
+            
+            if (hasActivityToday) {
+                if (userStats.lastActiveDate === yesterdayStr) {
+                    userStats.currentStreak++;
+                } else if (userStats.lastActiveDate !== today) {
+                    userStats.currentStreak = 1;
+                }
+                userStats.lastActiveDate = today;
+                userStats.longestStreak = Math.max(userStats.longestStreak, userStats.currentStreak);
+            } else if (userStats.lastActiveDate && userStats.lastActiveDate < yesterdayStr) {
+                userStats.currentStreak = 0;
+            }
+        }
+        
+        // Calculate average solve time
+        function calculateAverageTime() {
+            const solvedProblems = problems.filter(p => p.solvedAlone && p.timeTaken > 0);
+            if (solvedProblems.length === 0) return 0;
+            
+            const totalTime = solvedProblems.reduce((sum, p) => sum + p.timeTaken, 0);
+            return Math.round(totalTime / solvedProblems.length);
+        }
+        
+        // Render analytics (debounced for performance)
+        let analyticsTimeout;
+        function renderAnalytics() {
+            clearTimeout(analyticsTimeout);
+            analyticsTimeout = setTimeout(() => {
+                renderTopicStats();
+                renderDifficultyStats();
+                renderWeakAreas();
+                renderWeeklyChart();
+            }, 100);
+        }
+        
+        // Render topic statistics
+        function renderTopicStats() {
+            const topicData = {};
+            const topicTimes = {};
+            
+            problems.forEach(p => {
+                if (!topicData[p.topic]) {
+                    topicData[p.topic] = { total: 0, solved: 0 };
+                    topicTimes[p.topic] = [];
+                }
+                topicData[p.topic].total++;
+                if (p.solvedAlone) {
+                    topicData[p.topic].solved++;
+                    if (p.timeTaken > 0) topicTimes[p.topic].push(p.timeTaken);
+                }
+            });
+            
+            const container = document.getElementById('topicStats');
+            container.innerHTML = Object.entries(topicData)
+                .sort((a, b) => b[1].total - a[1].total)
+                .slice(0, 8)
+                .map(([topic, data]) => {
+                    const rate = data.total > 0 ? (data.solved / data.total) * 100 : 0;
+                    const avgTime = topicTimes[topic].length > 0 ? 
+                        Math.round(topicTimes[topic].reduce((a, b) => a + b, 0) / topicTimes[topic].length) : 0;
+                    
+                    return `
+                        <div class="stat-bar ${rate >= 70 ? 'good' : rate >= 40 ? '' : 'weak'}">
+                            <div>
+                                <strong>${topic}</strong><br>
+                                <small>${data.solved}/${data.total} solved • ${avgTime}min avg</small>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill ${rate >= 70 ? 'good' : rate >= 40 ? '' : 'weak'}" 
+                                     style="width: ${rate}%"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+        }
+        
+        // Render difficulty statistics
+        function renderDifficultyStats() {
+            const diffData = { Easy: { total: 0, solved: 0 }, Medium: { total: 0, solved: 0 }, Hard: { total: 0, solved: 0 } };
+            
+            problems.forEach(p => {
+                diffData[p.difficulty].total++;
+                if (p.solvedAlone) diffData[p.difficulty].solved++;
+            });
+            
+            const container = document.getElementById('difficultyStats');
+            container.innerHTML = Object.entries(diffData).map(([diff, data]) => {
+                const rate = data.total > 0 ? (data.solved / data.total) * 100 : 0;
+                return `
+                    <div class="stat-bar ${rate >= 70 ? 'good' : rate >= 40 ? '' : 'weak'}">
+                        <div>
+                            <strong>${diff}</strong><br>
+                            <small>${data.solved}/${data.total} solved</small>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill ${rate >= 70 ? 'good' : rate >= 40 ? '' : 'weak'}" 
+                                 style="width: ${rate}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Render weak areas
+        function renderWeakAreas() {
+            const patternData = {};
+            
+            problems.forEach(p => {
+                if (!patternData[p.pattern]) {
+                    patternData[p.pattern] = { total: 0, solved: 0, avgTime: 0, times: [] };
+                }
+                patternData[p.pattern].total++;
+                if (p.solvedAlone) {
+                    patternData[p.pattern].solved++;
+                    if (p.timeTaken > 0) patternData[p.pattern].times.push(p.timeTaken);
+                }
+            });
+            
+            const weakPatterns = Object.entries(patternData)
+                .filter(([_, data]) => data.total >= 2)
+                .map(([pattern, data]) => {
+                    const rate = (data.solved / data.total) * 100;
+                    const avgTime = data.times.length > 0 ? 
+                        data.times.reduce((a, b) => a + b, 0) / data.times.length : 0;
+                    return { pattern, rate, avgTime, ...data };
+                })
+                .sort((a, b) => a.rate - b.rate)
+                .slice(0, 5);
+            
+            const container = document.getElementById('weakAreas');
+            container.innerHTML = weakPatterns.map(data => `
+                <div class="stat-bar weak">
+                    <div>
+                        <strong>${data.pattern}</strong><br>
+                        <small>${data.solved}/${data.total} solved • ${Math.round(data.avgTime)}min avg</small>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill weak" style="width: ${data.rate}%"></div>
+                    </div>
+                </div>
+            `).join('') || '<p>No weak areas identified yet. Keep solving!</p>';
+        }
+        
+        // Render weekly chart (simple text-based)
+        function renderWeeklyChart() {
+            const canvas = document.getElementById('weeklyChart');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Get last 7 days data
+            const weekData = [];
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toISOString().split('T')[0];
+                const dayStats = userStats.dailyStats[dateStr];
+                weekData.push({
+                    date: date.toLocaleDateString('en', { weekday: 'short' }),
+                    problems: dayStats ? dayStats.problemsSolved : 0
+                });
+            }
+            
+            // Simple bar chart
+            const maxProblems = Math.max(...weekData.map(d => d.problems), 1);
+            const barWidth = 50;
+            const barSpacing = 10;
+            const chartHeight = 150;
+            
+            weekData.forEach((day, index) => {
+                const x = index * (barWidth + barSpacing) + 20;
+                const barHeight = (day.problems / maxProblems) * chartHeight;
+                const y = canvas.height - barHeight - 30;
+                
+                // Draw bar
+                ctx.fillStyle = '#667eea';
+                ctx.fillRect(x, y, barWidth, barHeight);
+                
+                // Draw day label
+                ctx.fillStyle = '#333';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(day.date, x + barWidth/2, canvas.height - 10);
+                
+                // Draw value
+                if (day.problems > 0) {
+                    ctx.fillText(day.problems, x + barWidth/2, y - 5);
+                }
+            });
+        }
+        
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Focus on username field
+            document.getElementById('username').focus();
+            
+            // Add keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Ctrl/Cmd + Enter to submit form
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    const activeForm = document.querySelector('form:not([style*="display: none"])');
+                    if (activeForm) {
+                        activeForm.dispatchEvent(new Event('submit'));
+                    }
+                }
+                
+                // Escape to cancel editing
+                if (e.key === 'Escape' && editingId) {
+                    resetForm();
+                }
+            });
+            
+            // Add form validation
+            const inputs = document.querySelectorAll('input[required], select[required]');
+            inputs.forEach(input => {
+                input.addEventListener('invalid', function() {
+                    this.style.borderColor = '#dc3545';
+                });
+                
+                input.addEventListener('input', function() {
+                    if (this.checkValidity()) {
+                        this.style.borderColor = '#e0e0e0';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
