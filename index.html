@@ -1899,55 +1899,6 @@ const firebaseConfig = {
             });
         }
 
-        // Google Sign-In
-        async function signInWithGoogle() {
-            if (!auth) {
-                showNotification('❌ Firebase not configured!', 'error');
-                return;
-            }
-            
-            try {
-                showNotification('⏳ Opening Google Sign-In...', 'info');
-                const provider = new firebase.auth.GoogleAuthProvider();
-                provider.setCustomParameters({
-                    prompt: 'select_account'
-                });
-                
-                const result = await auth.signInWithPopup(provider);
-                
-                firebaseUser = result.user;
-                currentUser = result.user.email.split('@')[0];
-                
-                showNotification('✅ Logged in with Google!', 'success');
-                
-                // Show dashboard
-                document.getElementById('displayUsername').textContent = currentUser;
-                document.getElementById('loginPage').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-                loadProblems();
-                setupRealtimeSync();
-                
-            } catch (error) {
-                console.error('Google Sign-In error:', error);
-                console.error('Error code:', error.code);
-                console.error('Error message:', error.message);
-                
-                if (error.code === 'auth/popup-closed-by-user') {
-                    showNotification('⚠️ Sign-in cancelled', 'info');
-                } else if (error.code === 'auth/unauthorized-domain') {
-                    showNotification('❌ Domain not authorized! Add your domain in Firebase Console → Authentication → Settings → Authorized domains', 'error');
-                    console.error('SETUP REQUIRED: Add this domain to Firebase authorized domains');
-                    console.error('Current domain:', window.location.hostname);
-                } else if (error.code === 'auth/operation-not-allowed') {
-                    showNotification('❌ Google Sign-In not enabled in Firebase Console', 'error');
-                } else if (error.code === 'auth/popup-blocked') {
-                    showNotification('❌ Popup blocked! Please allow popups for this site', 'error');
-                } else {
-                    showNotification('❌ Error: ' + error.message, 'error');
-                }
-            }
-        }
-        
         // Login with Firebase
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -2841,8 +2792,6 @@ const firebaseConfig = {
                 } else {
                     console.log('✅ Firebase initialized successfully');
                     console.log('📝 Make sure Email/Password is enabled in Firebase Console → Authentication → Sign-in method');
-                    console.log('🌐 Current domain:', window.location.hostname);
-                    console.log('📍 If Google Sign-In fails, add this domain to Firebase → Authentication → Settings → Authorized domains');
                 }
             }, 2000);
             
