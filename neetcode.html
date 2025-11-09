@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>NeetCode 150 Progress Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: white;
+            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 40px 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn, .action-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover, .action-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .action-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .action-btn:hover {
+            background: #5568d3;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .category {
+            margin-bottom: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #f8f9fa;
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .category-header:hover {
+            background: linear-gradient(135deg, #5568d3 0%, #653a8a 100%);
+        }
+
+        .category-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .category-progress {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .problems-list {
+            display: none;
+            padding: 20px;
+        }
+
+        .problems-list.active {
+            display: block;
+        }
+
+        .problem-item {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: grid;
+            grid-template-columns: auto 1fr auto auto auto;
+            gap: 20px;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .problem-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateX(5px);
+        }
+
+        .problem-checkbox {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .problem-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .problem-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #2d3748;
+        }
+
+        .difficulty {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            width: fit-content;
+        }
+
+        .difficulty.easy {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .difficulty.medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .difficulty.hard {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .problem-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .link-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .leetcode-btn {
+            background: #ffa116;
+            color: white;
+        }
+
+        .leetcode-btn:hover {
+            background: #ff8c00;
+            transform: scale(1.05);
+        }
+
+        .video-btn {
+            background: #ff0000;
+            color: white;
+        }
+
+        .video-btn:hover {
+            background: #cc0000;
+            transform: scale(1.05);
+        }
+
+        .notes-btn {
+            padding: 8px 16px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .notes-btn:hover {
+            background: #5a6268;
+            transform: scale(1.05);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: #667eea;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #6c757d;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: #000;
+        }
+
+        .notes-textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        .notes-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .save-btn {
+            margin-top: 15px;
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .save-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e9ecef;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .nav-bar {
+                padding: 10px 15px;
+                justify-content: center;
+            }
+            
+            .nav-btn {
+                flex: 1;
+                min-width: 90px;
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+            
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .header p {
+                font-size: 0.9rem;
+            }
+            
+            .stats {
+                padding: 20px 15px;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .stat-card {
+                padding: 15px;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+            
+            .controls {
+                padding: 15px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                min-width: 100%;
+            }
+
+            .filter-group {
+                justify-content: center;
+                gap: 8px;
+            }
+            
+            .filter-btn, .action-btn {
+                padding: 8px 15px;
+                font-size: 0.85rem;
+            }
+            
+            .content {
+                padding: 15px;
+            }
+            
+            .category {
+                margin-bottom: 20px;
+            }
+            
+            .category-header {
+                padding: 15px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .category-title {
+                font-size: 1.1rem;
+            }
+            
+            .problems-list {
+                padding: 15px;
+            }
+
+            .problem-item {
+                grid-template-columns: auto 1fr;
+                gap: 12px;
+                padding: 15px;
+            }
+
+            .problem-links {
+                grid-column: 1 / -1;
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .notes-btn {
+                grid-column: 1 / -1;
+                width: 100%;
+            }
+            
+            .modal-content {
+                margin: 20px;
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.3rem;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .stat-number {
+                font-size: 1.8rem;
+            }
+            
+            .nav-btn {
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+            
+            .filter-btn, .action-btn {
+                font-size: 0.8rem;
+                padding: 8px 12px;
+            }
+            
+            .problem-name {
+                font-size: 1rem;
+            }
+            
+            .difficulty {
+                font-size: 0.7rem;
+            }
+            
+            .link-btn, .notes-btn {
+                font-size: 0.8rem;
+                padding: 6px 12px;
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .nav-bar {
+            background: white;
+            padding: 15px 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .nav-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn.active {
+            background: #667eea;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-bar">
+            <a href="dsatracker.html" class="nav-btn">🎯 My Tracker</a>
+            <a href="neetcode.html" class="nav-btn active">📚 NeetCode 150</a>
+            <a href="striver.html" class="nav-btn">🔥 Striver SDE 191</a>
+        </div>
+        
+        <div class="header">
+            <h1>🚀 NeetCode 150 Progress Tracker</h1>
+            <p>Master Data Structures & Algorithms</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalCompleted">0</div>
+                <div class="stat-label">Completed</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="mainProgress" style="width: 0%">0%</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="easyCompleted">0</div>
+                <div class="stat-label">Easy Problems</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="mediumCompleted">0</div>
+                <div class="stat-label">Medium Problems</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="hardCompleted">0</div>
+                <div class="stat-label">Hard Problems</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="🔍 Search problems...">
+            </div>
+            <div class="filter-group">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="easy">Easy</button>
+                <button class="filter-btn" data-filter="medium">Medium</button>
+                <button class="filter-btn" data-filter="hard">Hard</button>
+                <button class="filter-btn" data-filter="completed">Completed</button>
+                <button class="filter-btn" data-filter="pending">Pending</button>
+            </div>
+            <button class="action-btn" id="resetBtn">Reset All</button>
+            <button class="action-btn" id="exportBtn">Export Progress</button>
+        </div>
+
+        <div class="content" id="content"></div>
+    </div>
+
+    <div class="modal" id="notesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add Notes</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <textarea class="notes-textarea" id="notesTextarea" placeholder="Write your notes, solution approach, or key learnings here..."></textarea>
+            <button class="save-btn" id="saveNotes">Save Notes</button>
+        </div>
+    </div>
+
+    <script>
+        const problems = [
+            {
+                category: "Arrays & Hashing",
+                items: [
+                    {name: "Contains Duplicate", difficulty: "easy", leetcode: "https://leetcode.com/problems/contains-duplicate/", video: "https://www.youtube.com/watch?v=3OamzN90kPg"},
+                    {name: "Valid Anagram", difficulty: "easy", leetcode: "https://leetcode.com/problems/valid-anagram/", video: "https://www.youtube.com/watch?v=9UtInBqnCgA"},
+                    {name: "Two Sum", difficulty: "easy", leetcode: "https://leetcode.com/problems/two-sum/", video: "https://www.youtube.com/watch?v=KLlXCFG5TnA"},
+                    {name: "Group Anagrams", difficulty: "medium", leetcode: "https://leetcode.com/problems/group-anagrams/", video: "https://www.youtube.com/watch?v=vzdNOK2oB2E"},
+                    {name: "Top K Frequent Elements", difficulty: "medium", leetcode: "https://leetcode.com/problems/top-k-frequent-elements/", video: "https://www.youtube.com/watch?v=YPTqKIgVk-k"},
+                    {name: "Product of Array Except Self", difficulty: "medium", leetcode: "https://leetcode.com/problems/product-of-array-except-self/", video: "https://www.youtube.com/watch?v=bNvIQI2wAjk"},
+                    {name: "Valid Sudoku", difficulty: "medium", leetcode: "https://leetcode.com/problems/valid-sudoku/", video: "https://www.youtube.com/watch?v=TjFXEUCMqI8"},
+                    {name: "Encode and Decode Strings", difficulty: "medium", leetcode: "https://leetcode.com/problems/encode-and-decode-strings/", video: "https://www.youtube.com/watch?v=B1k_sxOSgv8"},
+                    {name: "Longest Consecutive Sequence", difficulty: "medium", leetcode: "https://leetcode.com/problems/longest-consecutive-sequence/", video: "https://www.youtube.com/watch?v=P6RZZMu_maU"}
+                ]
+            },
+            {
+                category: "Two Pointers",
+                items: [
+                    {name: "Valid Palindrome", difficulty: "easy", leetcode: "https://leetcode.com/problems/valid-palindrome/", video: "https://www.youtube.com/watch?v=jJXJ16kPFWg"},
+                    {name: "Two Sum II - Input Array Is Sorted", difficulty: "medium", leetcode: "https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/", video: "https://www.youtube.com/watch?v=cQ1Oz4ckceM"},
+                    {name: "3Sum", difficulty: "medium", leetcode: "https://leetcode.com/problems/3sum/", video: "https://www.youtube.com/watch?v=jzZsG8n2R9A"},
+                    {name: "Container With Most Water", difficulty: "medium", leetcode: "https://leetcode.com/problems/container-with-most-water/", video: "https://www.youtube.com/watch?v=UuiTKBwPgAo"},
+                    {name: "Trapping Rain Water", difficulty: "hard", leetcode: "https://leetcode.com/problems/trapping-rain-water/", video: "https://www.youtube.com/watch?v=ZI2z5pq0TqA"}
+                ]
+            },
+            {
+                category: "Sliding Window",
+                items: [
+                    {name: "Best Time to Buy and Sell Stock", difficulty: "easy", leetcode: "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/", video: "https://www.youtube.com/watch?v=1pkOgXD63yU"},
+                    {name: "Longest Substring Without Repeating Characters", difficulty: "medium", leetcode: "https://leetcode.com/problems/longest-substring-without-repeating-characters/", video: "https://www.youtube.com/watch?v=wiGpQwVHdE0"},
+                    {name: "Longest Repeating Character Replacement", difficulty: "medium", leetcode: "https://leetcode.com/problems/longest-repeating-character-replacement/", video: "https://www.youtube.com/watch?v=gqXU1UyA8pk"},
+                    {name: "Permutation in String", difficulty: "medium", leetcode: "https://leetcode.com/problems/permutation-in-string/", video: "https://www.youtube.com/watch?v=UbyhOgBN834"},
+                    {name: "Minimum Window Substring", difficulty: "hard", leetcode: "https://leetcode.com/problems/minimum-window-substring/", video: "https://www.youtube.com/watch?v=jSto0O4AJbM"},
+                    {name: "Sliding Window Maximum", difficulty: "hard", leetcode: "https://leetcode.com/problems/sliding-window-maximum/", video: "https://www.youtube.com/watch?v=DfljaUwZsOk"}
+                ]
+            },
+            {
+                category: "Stack",
+                items: [
+                    {name: "Valid Parentheses", difficulty: "easy", leetcode: "https://leetcode.com/problems/valid-parentheses/", video: "https://www.youtube.com/watch?v=WTzjTskDFMg"},
+                    {name: "Min Stack", difficulty: "medium", leetcode: "https://leetcode.com/problems/min-stack/", video: "https://www.youtube.com/watch?v=qkLl7nAwDPo"},
+                    {name: "Evaluate Reverse Polish Notation", difficulty: "medium", leetcode: "https://leetcode.com/problems/evaluate-reverse-polish-notation/", video: "https://www.youtube.com/watch?v=iu0082c4HDE"},
+                    {name: "Generate Parentheses", difficulty: "medium", leetcode: "https://leetcode.com/problems/generate-parentheses/", video: "https://www.youtube.com/watch?v=s9fokUqJ76A"},
+                    {name: "Daily Temperatures", difficulty: "medium", leetcode: "https://leetcode.com/problems/daily-temperatures/", video: "https://www.youtube.com/watch?v=cTBiBSnjO3c"},
+                    {name: "Car Fleet", difficulty: "medium", leetcode: "https://leetcode.com/problems/car-fleet/", video: "https://www.youtube.com/watch?v=Pr6T-3yB9RM"},
+                    {name: "Largest Rectangle in Histogram", difficulty: "hard", leetcode: "https://leetcode.com/problems/largest-rectangle-in-histogram/", video: "https://www.youtube.com/watch?v=zx5Sw9130L0"}
+                ]
+            },
+            {
+                category: "Binary Search",
+                items: [
+                    {name: "Binary Search", difficulty: "easy", leetcode: "https://leetcode.com/problems/binary-search/", video: "https://www.youtube.com/watch?v=s4DPM8ct1pI"},
+                    {name: "Search a 2D Matrix", difficulty: "medium", leetcode: "https://leetcode.com/problems/search-a-2d-matrix/", video: "https://www.youtube.com/watch?v=Ber2pi2C0j0"},
+                    {name: "Koko Eating Bananas", difficulty: "medium", leetcode: "https://leetcode.com/problems/koko-eating-bananas/", video: "https://www.youtube.com/watch?v=U2SozAs9RzA"},
+                    {name: "Find Minimum in Rotated Sorted Array", difficulty: "medium", leetcode: "https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/", video: "https://www.youtube.com/watch?v=nIVW4P8b1VA"},
+                    {name: "Search in Rotated Sorted Array", difficulty: "medium", leetcode: "https://leetcode.com/problems/search-in-rotated-sorted-array/", video: "https://www.youtube.com/watch?v=U8XENwh8Oik"},
+                    {name: "Time Based Key-Value Store", difficulty: "medium", leetcode: "https://leetcode.com/problems/time-based-key-value-store/", video: "https://www.youtube.com/watch?v=fu2cD_6E8Hw"},
+                    {name: "Median of Two Sorted Arrays", difficulty: "hard", leetcode: "https://leetcode.com/problems/median-of-two-sorted-arrays/", video: "https://www.youtube.com/watch?v=q6IEA26hvXc"}
+                ]
+            },
+            {
+                category: "Linked List",
+                items: [
+                    {name: "Reverse Linked List", difficulty: "easy", leetcode: "https://leetcode.com/problems/reverse-linked-list/", video: "https://www.youtube.com/watch?v=G0_I-ZF0S38"},
+                    {name: "Merge Two Sorted Lists", difficulty: "easy", leetcode: "https://leetcode.com/problems/merge-two-sorted-lists/", video: "https://www.youtube.com/watch?v=XIdigk956u0"},
+                    {name: "Linked List Cycle", difficulty: "easy", leetcode: "https://leetcode.com/problems/linked-list-cycle/", video: "https://www.youtube.com/watch?v=gBTe7lFR3vc"},
+                    {name: "Reorder List", difficulty: "medium", leetcode: "https://leetcode.com/problems/reorder-list/", video: "https://www.youtube.com/watch?v=S5bfdUTrKLM"},
+                    {name: "Remove Nth Node From End of List", difficulty: "medium", leetcode: "https://leetcode.com/problems/remove-nth-node-from-end-of-list/", video: "https://www.youtube.com/watch?v=XVuQxVej6y8"},
+                    {name: "Copy List with Random Pointer", difficulty: "medium", leetcode: "https://leetcode.com/problems/copy-list-with-random-pointer/", video: "https://www.youtube.com/watch?v=5Y2EiZST97Y"},
+                    {name: "Add Two Numbers", difficulty: "medium", leetcode: "https://leetcode.com/problems/add-two-numbers/", video: "https://www.youtube.com/watch?v=wgFPrzTjm7s"},
+                    {name: "Find the Duplicate Number", difficulty: "medium", leetcode: "https://leetcode.com/problems/find-the-duplicate-number/", video: "https://www.youtube.com/watch?v=wjYnzkAhcNk"},
+                    {name: "LRU Cache", difficulty: "medium", leetcode: "https://leetcode.com/problems/lru-cache/", video: "https://www.youtube.com/watch?v=7ABFKPK2hD4"},
+                    {name: "Merge k Sorted Lists", difficulty: "hard", leetcode: "https://leetcode.com/problems/merge-k-sorted-lists/", video: "https://www.youtube.com/watch?v=q5a5OiGbT6Q"},
+                    {name: "Reverse Nodes in k-Group", difficulty: "hard", leetcode: "https://leetcode.com/problems/reverse-nodes-in-k-group/", video: "https://www.youtube.com/watch?v=1UOPsfP85V4"}
+                ]
+            },
+            {
+                category: "Trees",
+                items: [
+                    {name: "Invert Binary Tree", difficulty: "easy", leetcode: "https://leetcode.com/problems/invert-binary-tree/", video: "https://www.youtube.com/watch?v=OnSn2XEQ4MY"},
+                    {name: "Maximum Depth of Binary Tree", difficulty: "easy", leetcode: "https://leetcode.com/problems/maximum-depth-of-binary-tree/", video: "https://www.youtube.com/watch?v=hTM3phVI6YQ"},
+                    {name: "Diameter of Binary Tree", difficulty: "easy", leetcode: "https://leetcode.com/problems/diameter-of-binary-tree/", video: "https://www.youtube.com/watch?v=bkxqA8Rfv04"},
+                    {name: "Balanced Binary Tree", difficulty: "easy", leetcode: "https://leetcode.com/problems/balanced-binary-tree/", video: "https://www.youtube.com/watch?v=QfJsau0ItOY"},
+                    {name: "Same Tree", difficulty: "easy", leetcode: "https://leetcode.com/problems/same-tree/", video: "https://www.youtube.com/watch?v=vRbbcKXCxOw"},
+                    {name: "Subtree of Another Tree", difficulty: "easy", leetcode: "https://leetcode.com/problems/subtree-of-another-tree/", video: "https://www.youtube.com/watch?v=E36O5SWp-LE"},
+                    {name: "Lowest Common Ancestor of a Binary Search Tree", difficulty: "medium", leetcode: "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/", video: "https://www.youtube.com/watch?v=gs2LMfuOR9k"},
+                    {name: "Binary Tree Level Order Traversal", difficulty: "medium", leetcode: "https://leetcode.com/problems/binary-tree-level-order-traversal/", video: "https://www.youtube.com/watch?v=6ZnyEApgFYg"},
+                    {name: "Binary Tree Right Side View", difficulty: "medium", leetcode: "https://leetcode.com/problems/binary-tree-right-side-view/", video: "https://www.youtube.com/watch?v=d4zLyciuuXs"},
+                    {name: "Count Good Nodes in Binary Tree", difficulty: "medium", leetcode: "https://leetcode.com/problems/count-good-nodes-in-binary-tree/", video: "https://www.youtube.com/watch?v=7cp5imvDzl4"},
+                    {name: "Validate Binary Search Tree", difficulty: "medium", leetcode: "https://leetcode.com/problems/validate-binary-search-tree/", video: "https://www.youtube.com/watch?v=s6ATEkipzow"},
+                    {name: "Kth Smallest Element in a BST", difficulty: "medium", leetcode: "https://leetcode.com/problems/kth-smallest-element-in-a-bst/", video: "https://www.youtube.com/watch?v=5LUXSvjmGCw"},
+                    {name: "Construct Binary Tree from Preorder and Inorder Traversal", difficulty: "medium", leetcode: "https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/", video: "https://www.youtube.com/watch?v=ihj4IQGZ2zc"},
+                    {name: "Binary Tree Maximum Path Sum", difficulty: "hard", leetcode: "https://leetcode.com/problems/binary-tree-maximum-path-sum/", video: "https://www.youtube.com/watch?v=Hr5cWUld4vU"},
+                    {name: "Serialize and Deserialize Binary Tree", difficulty: "hard", leetcode: "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/", video: "https://www.youtube.com/watch?v=u4JAi2JJhI8"}
+                ]
+            },
+            {
+                category: "Tries",
+                items: [
+                    {name: "Implement Trie (Prefix Tree)", difficulty: "medium", leetcode: "https://leetcode.com/problems/implement-trie-prefix-tree/", video: "https://www.youtube.com/watch?v=oobqoCJlHA0"},
+                    {name: "Design Add and Search Words Data Structure", difficulty: "medium", leetcode: "https://leetcode.com/problems/design-add-and-search-words-data-structure/", video: "https://www.youtube.com/watch?v=BTf05gs_8iU"},
+                    {name: "Word Search II", difficulty: "hard", leetcode: "https://leetcode.com/problems/word-search-ii/", video: "https://www.youtube.com/watch?v=asbcE9mZz_U"}
+                ]
+            },
+            {
+                category: "Heap / Priority Queue",
+                items: [
+                    {name: "Kth Largest Element in a Stream", difficulty: "easy", leetcode: "https://leetcode.com/problems/kth-largest-element-in-a-stream/", video: "https://www.youtube.com/watch?v=hOjcdrqMoQ8"},
+                    {name: "Last Stone Weight", difficulty: "easy", leetcode: "https://leetcode.com/problems/last-stone-weight/", video: "https://www.youtube.com/watch?v=B-QCq79-Vfw"},
+                    {name: "K Closest Points to Origin", difficulty: "medium", leetcode: "https://leetcode.com/problems/k-closest-points-to-origin/", video: "https://www.youtube.com/watch?v=rI2EBUEMfTk"},
+                    {name: "Kth Largest Element in an Array", difficulty: "medium", leetcode: "https://leetcode.com/problems/kth-largest-element-in-an-array/", video: "https://www.youtube.com/watch?v=XEmy13g1Qxc"},
+                    {name: "Task Scheduler", difficulty: "medium", leetcode: "https://leetcode.com/problems/task-scheduler/", video: "https://www.youtube.com/watch?v=s8p8ukTyA2I"},
+                    {name: "Design Twitter", difficulty: "medium", leetcode: "https://leetcode.com/problems/design-twitter/", video: "https://www.youtube.com/watch?v=pNichitDD2E"},
+                    {name: "Find Median from Data Stream", difficulty: "hard", leetcode: "https://leetcode.com/problems/find-median-from-data-stream/", video: "https://www.youtube.com/watch?v=itmhHWaHupI"}
+                ]
+            },
+            {
+                category: "Backtracking",
+                items: [
+                    {name: "Subsets", difficulty: "medium", leetcode: "https://leetcode.com/problems/subsets/", video: "https://www.youtube.com/watch?v=REOH22Xwdkk"},
+                    {name: "Combination Sum", difficulty: "medium", leetcode: "https://leetcode.com/problems/combination-sum/", video: "https://www.youtube.com/watch?v=GBKI9VSKdGg"},
+                    {name: "Permutations", difficulty: "medium", leetcode: "https://leetcode.com/problems/permutations/", video: "https://www.youtube.com/watch?v=s7AvT7cGdSo"},
+                    {name: "Subsets II", difficulty: "medium", leetcode: "https://leetcode.com/problems/subsets-ii/", video: "https://www.youtube.com/watch?v=Vn2v6ajA7U0"},
+                    {name: "Combination Sum II", difficulty: "medium", leetcode: "https://leetcode.com/problems/combination-sum-ii/", video: "https://www.youtube.com/watch?v=rSA3t6BDDwg"},
+                    {name: "Word Search", difficulty: "medium", leetcode: "https://leetcode.com/problems/word-search/", video: "https://www.youtube.com/watch?v=pfiQ_PS1g8E"},
+                    {name: "Palindrome Partitioning", difficulty: "medium", leetcode: "https://leetcode.com/problems/palindrome-partitioning/", video: "https://www.youtube.com/watch?v=3jvWodd7ht0"},
+                    {name: "Letter Combinations of a Phone Number", difficulty: "medium", leetcode: "https://leetcode.com/problems/letter-combinations-of-a-phone-number/", video: "https://www.youtube.com/watch?v=0snEunUacZY"},
+                    {name: "N-Queens", difficulty: "hard", leetcode: "https://leetcode.com/problems/n-queens/", video: "https://www.youtube.com/watch?v=Ph95IHmRp5M"}
+                ]
+            },
+            {
+                category: "Graphs",
+                items: [
+                    {name: "Number of Islands", difficulty: "medium", leetcode: "https://leetcode.com/problems/number-of-islands/", video: "https://www.youtube.com/watch?v=pV2kpPD66nE"},
+                    {name: "Clone Graph", difficulty: "medium", leetcode: "https://leetcode.com/problems/clone-graph/", video: "https://www.youtube.com/watch?v=mQeF6bN8hMk"},
+                    {name: "Max Area of Island", difficulty: "medium", leetcode: "https://leetcode.com/problems/max-area-of-island/", video: "https://www.youtube.com/watch?v=iJGr1OtmH0c"},
+                    {name: "Pacific Atlantic Water Flow", difficulty: "medium", leetcode: "https://leetcode.com/problems/pacific-atlantic-water-flow/", video: "https://www.youtube.com/watch?v=s-VkcjHqkGI"},
+                    {name: "Surrounded Regions", difficulty: "medium", leetcode: "https://leetcode.com/problems/surrounded-regions/", video: "https://www.youtube.com/watch?v=9z2BunfoZ5Y"},
+                    {name: "Rotting Oranges", difficulty: "medium", leetcode: "https://leetcode.com/problems/rotting-oranges/", video: "https://www.youtube.com/watch?v=y704fEOx0s0"},
+                    {name: "Walls and Gates", difficulty: "medium", leetcode: "https://leetcode.com/problems/walls-and-gates/", video: "https://www.youtube.com/watch?v=e69C6xhiSQE"},
+                    {name: "Course Schedule", difficulty: "medium", leetcode: "https://leetcode.com/problems/course-schedule/", video: "https://www.youtube.com/watch?v=EgI5nU9etnU"},
+                    {name: "Course Schedule II", difficulty: "medium", leetcode: "https://leetcode.com/problems/course-schedule-ii/", video: "https://www.youtube.com/watch?v=Akt3glAwyfY"},
+                    {name: "Redundant Connection", difficulty: "medium", leetcode: "https://leetcode.com/problems/redundant-connection/", video: "https://www.youtube.com/watch?v=FXWRE67PLL0"},
+                    {name: "Number of Connected Components in an Undirected Graph", difficulty: "medium", leetcode: "https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/", video: "https://www.youtube.com/watch?v=8f1XPm4WOUc"},
+                    {name: "Graph Valid Tree", difficulty: "medium", leetcode: "https://leetcode.com/problems/graph-valid-tree/", video: "https://www.youtube.com/watch?v=bXsUuownnoQ"},
+                    {name: "Word Ladder", difficulty: "hard", leetcode: "https://leetcode.com/problems/word-ladder/", video: "https://www.youtube.com/watch?v=h9iTnkgv05E"}
+                ]
+            },
+            {
+                category: "Advanced Graphs",
+                items: [
+                    {name: "Reconstruct Itinerary", difficulty: "hard", leetcode: "https://leetcode.com/problems/reconstruct-itinerary/", video: "https://www.youtube.com/watch?v=ZyB_gQ8vqGA"},
+                    {name: "Min Cost to Connect All Points", difficulty: "medium", leetcode: "https://leetcode.com/problems/min-cost-to-connect-all-points/", video: "https://www.youtube.com/watch?v=f7JOBJIC-NA"},
+                    {name: "Network Delay Time", difficulty: "medium", leetcode: "https://leetcode.com/problems/network-delay-time/", video: "https://www.youtube.com/watch?v=EaphyqKU4PQ"},
+                    {name: "Swim in Rising Water", difficulty: "hard", leetcode: "https://leetcode.com/problems/swim-in-rising-water/", video: "https://www.youtube.com/watch?v=amvrKlMLuGY"},
+                    {name: "Alien Dictionary", difficulty: "hard", leetcode: "https://leetcode.com/problems/alien-dictionary/", video: "https://www.youtube.com/watch?v=6kTZYvNNyps"},
+                    {name: "Cheapest Flights Within K Stops", difficulty: "medium", leetcode: "https://leetcode.com/problems/cheapest-flights-within-k-stops/", video: "https://www.youtube.com/watch?v=5eIK3zUdYmE"}
+                ]
+            },
+            {
+                category: "1-D Dynamic Programming",
+                items: [
+                    {name: "Climbing Stairs", difficulty: "easy", leetcode: "https://leetcode.com/problems/climbing-stairs/", video: "https://www.youtube.com/watch?v=Y0lT9Fck7qI"},
+                    {name: "Min Cost Climbing Stairs", difficulty: "easy", leetcode: "https://leetcode.com/problems/min-cost-climbing-stairs/", video: "https://www.youtube.com/watch?v=ktmzAZWkEZ0"},
+                    {name: "House Robber", difficulty: "medium", leetcode: "https://leetcode.com/problems/house-robber/", video: "https://www.youtube.com/watch?v=73r3KWiEvyk"},
+                    {name: "House Robber II", difficulty: "medium", leetcode: "https://leetcode.com/problems/house-robber-ii/", video: "https://www.youtube.com/watch?v=rWAJCfYYOvM"},
+                    {name: "Longest Palindromic Substring", difficulty: "medium", leetcode: "https://leetcode.com/problems/longest-palindromic-substring/", video: "https://www.youtube.com/watch?v=XYQecbcd6_c"},
+                    {name: "Palindromic Substrings", difficulty: "medium", leetcode: "https://leetcode.com/problems/palindromic-substrings/", video: "https://www.youtube.com/watch?v=4RACzI5-du8"},
+                    {name: "Decode Ways", difficulty: "medium", leetcode: "https://leetcode.com/problems/decode-ways/", video: "https://www.youtube.com/watch?v=6aEyTjOwlJU"},
+                    {name: "Coin Change", difficulty: "medium", leetcode: "https://leetcode.com/problems/coin-change/", video: "https://www.youtube.com/watch?v=H9bfqozjoqs"},
+                    {name: "Maximum Product Subarray", difficulty: "medium", leetcode: "https://leetcode.com/problems/maximum-product-subarray/", video: "https://www.youtube.com/watch?v=lXVy6YWFcRM"},
+                    {name: "Word Break", difficulty: "medium", leetcode: "https://leetcode.com/problems/word-break/", video: "https://www.youtube.com/watch?v=Sx9NNgInc3A"},
+                    {name: "Longest Increasing Subsequence", difficulty: "medium", leetcode: "https://leetcode.com/problems/longest-increasing-subsequence/", video: "https://www.youtube.com/watch?v=cjWnW0hdF1Y"},
+                    {name: "Partition Equal Subset Sum", difficulty: "medium", leetcode: "https://leetcode.com/problems/partition-equal-subset-sum/", video: "https://www.youtube.com/watch?v=IsvocB5BJhw"}
+                ]
+            },
+            {
+                category: "2-D Dynamic Programming",
+                items: [
+                    {name: "Unique Paths", difficulty: "medium", leetcode: "https://leetcode.com/problems/unique-paths/", video: "https://www.youtube.com/watch?v=IlEsdxuD4lY"},
+                    {name: "Longest Common Subsequence", difficulty: "medium", leetcode: "https://leetcode.com/problems/longest-common-subsequence/", video: "https://www.youtube.com/watch?v=Ua0GhsJSlWM"},
+                    {name: "Best Time to Buy and Sell Stock with Cooldown", difficulty: "medium", leetcode: "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/", video: "https://www.youtube.com/watch?v=I7j0F7AHpb8"},
+                    {name: "Coin Change II", difficulty: "medium", leetcode: "https://leetcode.com/problems/coin-change-ii/", video: "https://www.youtube.com/watch?v=Mjy4hd2xgrs"},
+                    {name: "Target Sum", difficulty: "medium", leetcode: "https://leetcode.com/problems/target-sum/", video: "https://www.youtube.com/watch?v=g0npyaQtAQM"},
+                    {name: "Interleaving String", difficulty: "medium", leetcode: "https://leetcode.com/problems/interleaving-string/", video: "https://www.youtube.com/watch?v=3Rw3p9LrgvE"},
+                    {name: "Longest Increasing Path in a Matrix", difficulty: "hard", leetcode: "https://leetcode.com/problems/longest-increasing-path-in-a-matrix/", video: "https://www.youtube.com/watch?v=wCc_nd-GiEc"},
+                    {name: "Distinct Subsequences", difficulty: "hard", leetcode: "https://leetcode.com/problems/distinct-subsequences/", video: "https://www.youtube.com/watch?v=nVG7eTiD2bY"},
+                    {name: "Edit Distance", difficulty: "medium", leetcode: "https://leetcode.com/problems/edit-distance/", video: "https://www.youtube.com/watch?v=XYi2-LPrwm4"},
+                    {name: "Burst Balloons", difficulty: "hard", leetcode: "https://leetcode.com/problems/burst-balloons/", video: "https://www.youtube.com/watch?v=VFskby7lUbw"},
+                    {name: "Regular Expression Matching", difficulty: "hard", leetcode: "https://leetcode.com/problems/regular-expression-matching/", video: "https://www.youtube.com/watch?v=l3hda49XcDE"}
+                ]
+            },
+            {
+                category: "Greedy",
+                items: [
+                    {name: "Maximum Subarray", difficulty: "medium", leetcode: "https://leetcode.com/problems/maximum-subarray/", video: "https://www.youtube.com/watch?v=5WZl3MMT0Eg"},
+                    {name: "Jump Game", difficulty: "medium", leetcode: "https://leetcode.com/problems/jump-game/", video: "https://www.youtube.com/watch?v=Yan0cv2cLy8"},
+                    {name: "Jump Game II", difficulty: "medium", leetcode: "https://leetcode.com/problems/jump-game-ii/", video: "https://www.youtube.com/watch?v=dJ7sWiOoK7g"},
+                    {name: "Gas Station", difficulty: "medium", leetcode: "https://leetcode.com/problems/gas-station/", video: "https://www.youtube.com/watch?v=lJwbPZGo05A"},
+                    {name: "Hand of Straights", difficulty: "medium", leetcode: "https://leetcode.com/problems/hand-of-straights/", video: "https://www.youtube.com/watch?v=amnrMCVd2YI"},
+                    {name: "Merge Triplets to Form Target Triplet", difficulty: "medium", leetcode: "https://leetcode.com/problems/merge-triplets-to-form-target-triplet/", video: "https://www.youtube.com/watch?v=kShkQLQZ9K4"},
+                    {name: "Partition Labels", difficulty: "medium", leetcode: "https://leetcode.com/problems/partition-labels/", video: "https://www.youtube.com/watch?v=B7m8UmZE-vw"},
+                    {name: "Valid Parenthesis String", difficulty: "medium", leetcode: "https://leetcode.com/problems/valid-parenthesis-string/", video: "https://www.youtube.com/watch?v=QhPdNS143Qg"}
+                ]
+            },
+            {
+                category: "Intervals",
+                items: [
+                    {name: "Insert Interval", difficulty: "medium", leetcode: "https://leetcode.com/problems/insert-interval/", video: "https://www.youtube.com/watch?v=A8NUOmlwOlM"},
+                    {name: "Merge Intervals", difficulty: "medium", leetcode: "https://leetcode.com/problems/merge-intervals/", video: "https://www.youtube.com/watch?v=44H3cEC2fFM"},
+                    {name: "Non-overlapping Intervals", difficulty: "medium", leetcode: "https://leetcode.com/problems/non-overlapping-intervals/", video: "https://www.youtube.com/watch?v=nONCGxWoUfM"},
+                    {name: "Meeting Rooms", difficulty: "easy", leetcode: "https://leetcode.com/problems/meeting-rooms/", video: "https://www.youtube.com/watch?v=PaJxqZVPhbg"},
+                    {name: "Meeting Rooms II", difficulty: "medium", leetcode: "https://leetcode.com/problems/meeting-rooms-ii/", video: "https://www.youtube.com/watch?v=FdzJmTCVyJU"},
+                    {name: "Minimum Interval to Include Each Query", difficulty: "hard", leetcode: "https://leetcode.com/problems/minimum-interval-to-include-each-query/", video: "https://www.youtube.com/watch?v=5hQ5WWW5awQ"}
+                ]
+            },
+            {
+                category: "Math & Geometry",
+                items: [
+                    {name: "Rotate Image", difficulty: "medium", leetcode: "https://leetcode.com/problems/rotate-image/", video: "https://www.youtube.com/watch?v=fMSJSS7eO1w"},
+                    {name: "Spiral Matrix", difficulty: "medium", leetcode: "https://leetcode.com/problems/spiral-matrix/", video: "https://www.youtube.com/watch?v=BJnMZNwUk1M"},
+                    {name: "Set Matrix Zeroes", difficulty: "medium", leetcode: "https://leetcode.com/problems/set-matrix-zeroes/", video: "https://www.youtube.com/watch?v=T41rL0L3Pnw"},
+                    {name: "Happy Number", difficulty: "easy", leetcode: "https://leetcode.com/problems/happy-number/", video: "https://www.youtube.com/watch?v=ljz85bxOYJ0"},
+                    {name: "Plus One", difficulty: "easy", leetcode: "https://leetcode.com/problems/plus-one/", video: "https://www.youtube.com/watch?v=jIaA8boiG1s"},
+                    {name: "Pow(x, n)", difficulty: "medium", leetcode: "https://leetcode.com/problems/powx-n/", video: "https://www.youtube.com/watch?v=g9YQyYi4IQQ"},
+                    {name: "Multiply Strings", difficulty: "medium", leetcode: "https://leetcode.com/problems/multiply-strings/", video: "https://www.youtube.com/watch?v=1vZswirL8Y8"},
+                    {name: "Detect Squares", difficulty: "medium", leetcode: "https://leetcode.com/problems/detect-squares/", video: "https://www.youtube.com/watch?v=bahebearrDc"}
+                ]
+            },
+            {
+                category: "Bit Manipulation",
+                items: [
+                    {name: "Single Number", difficulty: "easy", leetcode: "https://leetcode.com/problems/single-number/", video: "https://www.youtube.com/watch?v=qMPX1AOa83k"},
+                    {name: "Number of 1 Bits", difficulty: "easy", leetcode: "https://leetcode.com/problems/number-of-1-bits/", video: "https://www.youtube.com/watch?v=5Km3utixwZs"},
+                    {name: "Counting Bits", difficulty: "easy", leetcode: "https://leetcode.com/problems/counting-bits/", video: "https://www.youtube.com/watch?v=RyBM56RIWrM"},
+                    {name: "Reverse Bits", difficulty: "easy", leetcode: "https://leetcode.com/problems/reverse-bits/", video: "https://www.youtube.com/watch?v=UcoN6UjAI64"},
+                    {name: "Missing Number", difficulty: "easy", leetcode: "https://leetcode.com/problems/missing-number/", video: "https://www.youtube.com/watch?v=WnPLSRLSANE"},
+                    {name: "Sum of Two Integers", difficulty: "medium", leetcode: "https://leetcode.com/problems/sum-of-two-integers/", video: "https://www.youtube.com/watch?v=qq64FrA2UXQ"},
+                    {name: "Reverse Integer", difficulty: "medium", leetcode: "https://leetcode.com/problems/reverse-integer/", video: "https://www.youtube.com/watch?v=HAgLH58IgJQ"}
+                ]
+            }
+        ];
+
+        // State management
+        let currentFilter = 'all';
+        let searchTerm = '';
+        let currentProblemId = null;
+        let progressData = JSON.parse(localStorage.getItem('neetcodeProgress')) || {};
+        let notesData = JSON.parse(localStorage.getItem('neetcodeNotes')) || {};
+
+        // Check login status
+        function checkLogin() {
+            const loggedInUser = localStorage.getItem('dsaTrackerUser');
+            if (!loggedInUser) {
+                if (confirm('You need to login first. Go to login page?')) {
+                    window.location.href = 'dsatracker.html';
+                }
+                return false;
+            }
+            return true;
+        }
+
+        // Initialize
+        function init() {
+            if (!checkLogin()) return;
+            renderProblems();
+            updateStats();
+            attachEventListeners();
+        }
+
+        // Render all problems
+        function renderProblems() {
+            const content = document.getElementById('content');
+            content.innerHTML = '';
+
+            const filteredProblems = getFilteredProblems();
+
+            if (filteredProblems.length === 0) {
+                content.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No problems found</h3>
+                        <p>Try adjusting your filters or search term</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredProblems.forEach(category => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'category';
+
+                const completed = category.items.filter(p => progressData[getProblemId(p)]).length;
+                const total = category.items.length;
+                const percentage = Math.round((completed / total) * 100);
+
+                categoryDiv.innerHTML = `
+                    <div class="category-header" onclick="toggleCategory(this)">
+                        <div class="category-title">${category.category} (${category.items.length})</div>
+                        <div class="category-progress">${completed}/${total} completed (${percentage}%)</div>
+                    </div>
+                    <div class="problems-list">
+                        ${category.items.map(problem => renderProblem(problem)).join('')}
+                    </div>
+                `;
+
+                content.appendChild(categoryDiv);
+            });
+        }
+
+        // Render individual problem
+        function renderProblem(problem) {
+            const id = getProblemId(problem);
+            const isCompleted = progressData[id] || false;
+            const hasNotes = notesData[id] && notesData[id].trim() !== '';
+
+            return `
+                <div class="problem-item" data-difficulty="${problem.difficulty}" data-completed="${isCompleted}">
+                    <input type="checkbox" class="problem-checkbox" 
+                           ${isCompleted ? 'checked' : ''} 
+                           onchange="toggleProblem('${id}')"
+                           id="checkbox-${id}">
+                    <div class="problem-info">
+                        <div class="problem-name">${problem.name}</div>
+                        <span class="difficulty ${problem.difficulty}">${problem.difficulty.toUpperCase()}</span>
+                    </div>
+                    <div class="problem-links">
+                        <a href="${problem.leetcode}" target="_blank" class="link-btn leetcode-btn">LeetCode</a>
+                        <a href="${problem.video}" target="_blank" class="link-btn video-btn">Video</a>
+                    </div>
+                    <button class="notes-btn" onclick="openNotes('${id}', '${problem.name.replace(/'/g, "\\'")}')">
+                        ${hasNotes ? '📝 Edit Notes' : '📝 Notes'}
+                    </button>
+                </div>
+            `;
+        }
+
+        // Get problem ID
+        function getProblemId(problem) {
+            return problem.name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+        }
+
+        // Toggle category
+        function toggleCategory(header) {
+            const problemsList = header.nextElementSibling;
+            problemsList.classList.toggle('active');
+        }
+
+        // Toggle problem completion
+        function toggleProblem(id) {
+            progressData[id] = !progressData[id];
+            localStorage.setItem('neetcodeProgress', JSON.stringify(progressData));
+            updateStats();
+        }
+
+        // Open notes modal
+        function openNotes(id, name) {
+            currentProblemId = id;
+            document.getElementById('modalTitle').textContent = `Notes: ${name}`;
+            document.getElementById('notesTextarea').value = notesData[id] || '';
+            document.getElementById('notesModal').classList.add('active');
+        }
+
+        // Close notes modal
+        function closeNotes() {
+            document.getElementById('notesModal').classList.remove('active');
+            currentProblemId = null;
+        }
+
+        // Save notes
+        function saveNotes() {
+            const notes = document.getElementById('notesTextarea').value;
+            if (currentProblemId) {
+                notesData[currentProblemId] = notes;
+                localStorage.setItem('neetcodeNotes', JSON.stringify(notesData));
+                closeNotes();
+                renderProblems();
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            const completed = Object.values(progressData).filter(Boolean).length;
+            const total = 150;
+            const percentage = Math.round((completed / total) * 100);
+
+            document.getElementById('totalCompleted').textContent = `${completed}/${total}`;
+            document.getElementById('mainProgress').style.width = `${percentage}%`;
+            document.getElementById('mainProgress').textContent = `${percentage}%`;
+
+            // Count by difficulty
+            let easy = 0, medium = 0, hard = 0;
+            problems.forEach(category => {
+                category.items.forEach(problem => {
+                    const id = getProblemId(problem);
+                    if (progressData[id]) {
+                        if (problem.difficulty === 'easy') easy++;
+                        else if (problem.difficulty === 'medium') medium++;
+                        else if (problem.difficulty === 'hard') hard++;
+                    }
+                });
+            });
+
+            document.getElementById('easyCompleted').textContent = `${easy}/26`;
+            document.getElementById('mediumCompleted').textContent = `${medium}/99`;
+            document.getElementById('hardCompleted').textContent = `${hard}/25`;
+        }
+
+        // Get filtered problems
+        function getFilteredProblems() {
+            return problems.map(category => {
+                const items = category.items.filter(problem => {
+                    const id = getProblemId(problem);
+                    const isCompleted = progressData[id] || false;
+
+                    // Apply filters
+                    if (currentFilter !== 'all') {
+                        if (currentFilter === 'completed' && !isCompleted) return false;
+                        if (currentFilter === 'pending' && isCompleted) return false;
+                        if (['easy', 'medium', 'hard'].includes(currentFilter) && problem.difficulty !== currentFilter) return false;
+                    }
+
+                    // Apply search
+                    if (searchTerm && !problem.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+                        return false;
+                    }
+
+                    return true;
+                });
+
+                return { ...category, items };
+            }).filter(category => category.items.length > 0);
+        }
+
+        // Attach event listeners
+        function attachEventListeners() {
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.filter;
+                    renderProblems();
+                });
+            });
+
+            // Search
+            document.getElementById('searchInput').addEventListener('input', function(e) {
+                searchTerm = e.target.value;
+                renderProblems();
+            });
+
+            // Reset button
+            document.getElementById('resetBtn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                    progressData = {};
+                    notesData = {};
+                    localStorage.removeItem('neetcodeProgress');
+                    localStorage.removeItem('neetcodeNotes');
+                    renderProblems();
+                    updateStats();
+                }
+            });
+
+            // Export button
+            document.getElementById('exportBtn').addEventListener('click', function() {
+                const data = {
+                    progress: progressData,
+                    notes: notesData,
+                    exportDate: new Date().toISOString()
+                };
+                const json = JSON.stringify(data, null, 2);
+                const blob = new Blob([json], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `neetcode-progress-${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+
+            // Close modal
+            document.getElementById('closeModal').addEventListener('click', closeNotes);
+            document.getElementById('notesModal').addEventListener('click', function(e) {
+                if (e.target === this) closeNotes();
+            });
+
+            // Save notes
+            document.getElementById('saveNotes').addEventListener('click', saveNotes);
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            init();
+        });
+    </script>
+</body>
+</html>
