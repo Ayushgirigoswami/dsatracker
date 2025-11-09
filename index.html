@@ -1090,6 +1090,234 @@
             background: #667eea;
             color: white;
         }
+
+        /* AI Assistant & Reports */
+        .ai-assistant {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .ai-chat-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s;
+        }
+
+        .ai-chat-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+        }
+
+        .ai-chat-window {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 400px;
+            max-width: calc(100vw - 40px);
+            height: 600px;
+            max-height: calc(100vh - 120px);
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .ai-chat-window.active {
+            display: flex;
+        }
+
+        .ai-chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ai-chat-header h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .ai-close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+        }
+
+        .ai-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f8f9fa;
+        }
+
+        .ai-message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            max-width: 85%;
+            word-wrap: break-word;
+        }
+
+        .ai-message.user {
+            background: #667eea;
+            color: white;
+            margin-left: auto;
+        }
+
+        .ai-message.bot {
+            background: white;
+            color: #333;
+            border: 1px solid #e0e0e0;
+        }
+
+        .ai-chat-input {
+            padding: 15px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .ai-chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .ai-send-btn {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .ai-send-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        .report-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .report-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-generate-report {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-generate-report:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .report-content {
+            display: none;
+        }
+
+        .report-content.active {
+            display: block;
+        }
+
+        .report-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .report-card.weak {
+            border-left-color: #e74c3c;
+            background: #fff5f5;
+        }
+
+        .report-card.good {
+            border-left-color: #27ae60;
+            background: #f0fff4;
+        }
+
+        .report-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .report-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .report-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .report-list li:last-child {
+            border-bottom: none;
+        }
+
+        .priority-high {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+
+        .priority-medium {
+            color: #f39c12;
+            font-weight: 600;
+        }
+
+        .priority-low {
+            color: #27ae60;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .ai-chat-window {
+                width: calc(100vw - 40px);
+                height: calc(100vh - 120px);
+            }
+        }
     </style>
 </head>
 <body>
@@ -1184,6 +1412,15 @@
         </div>
 
 
+
+        <!-- AI-Powered Report Section -->
+        <div class="report-section">
+            <h2>
+                🤖 AI-Powered Learning Report
+                <button class="btn-generate-report" onclick="generateFullReport()">Generate Report</button>
+            </h2>
+            <div id="reportContent" class="report-content"></div>
+        </div>
 
         <!-- Analytics Dashboard -->
         <div class="analytics-section">
@@ -1372,6 +1609,22 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- AI Assistant -->
+    <div class="ai-assistant">
+        <button class="ai-chat-btn" onclick="toggleAIChat()" title="Ask AI Assistant">🤖</button>
+        <div id="aiChatWindow" class="ai-chat-window">
+            <div class="ai-chat-header">
+                <h3>🤖 AI Assistant (Gemini)</h3>
+                <button class="ai-close-btn" onclick="toggleAIChat()">×</button>
+            </div>
+            <div id="aiChatMessages" class="ai-chat-messages"></div>
+            <div class="ai-chat-input">
+                <input type="text" id="aiChatInput" placeholder="Ask anything about DSA..." onkeypress="if(event.key==='Enter') sendAIMessage()">
+                <button class="ai-send-btn" onclick="sendAIMessage()" id="aiSendBtn">Send</button>
             </div>
         </div>
     </div>
@@ -2811,6 +3064,257 @@ const firebaseConfig = {
             } catch (error) {
                 console.error('Load failed:', error);
             }
+        }
+        
+        // AI Assistant Functions
+        let geminiApiKey = localStorage.getItem('geminiApiKey') || 'AIzaSyDa2H-qeo3X3IXO6JK2H7N3MIbxAtc4IVE';
+        
+        function toggleAIChat() {
+            const chatWindow = document.getElementById('aiChatWindow');
+            chatWindow.classList.toggle('active');
+            
+            if (chatWindow.classList.contains('active')) {
+                const messagesDiv = document.getElementById('aiChatMessages');
+                if (messagesDiv.children.length === 0) {
+                    addAIMessage('bot', '👋 Hi! I\'m your AI assistant powered by Google Gemini.\n\n✅ Ready to help! Ask me anything about:\n• DSA concepts & algorithms\n• Problem-solving strategies\n• Interview preparation\n• Your progress & weak areas\n\nTry: "Explain binary search" or "What should I focus on?"');
+                }
+            }
+        }
+        
+        function addAIMessage(type, text) {
+            const messagesDiv = document.getElementById('aiChatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `ai-message ${type}`;
+            messageDiv.textContent = text;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        
+        async function sendAIMessage() {
+            const input = document.getElementById('aiChatInput');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            // Check for API key setup command
+            if (message.startsWith('/setkey ')) {
+                geminiApiKey = message.substring(8).trim();
+                localStorage.setItem('geminiApiKey', geminiApiKey);
+                addAIMessage('user', message.replace(geminiApiKey, '***'));
+                addAIMessage('bot', '✅ API key saved! Now you can ask me anything about DSA, algorithms, or your progress!');
+                input.value = '';
+                return;
+            }
+            
+            if (!geminiApiKey) {
+                addAIMessage('bot', '❌ Please set your API key first using: /setkey YOUR_API_KEY');
+                return;
+            }
+            
+            addAIMessage('user', message);
+            input.value = '';
+            
+            const sendBtn = document.getElementById('aiSendBtn');
+            sendBtn.disabled = true;
+            sendBtn.textContent = '...';
+            
+            try {
+                // Prepare context about user's progress
+                const context = `User's DSA Progress:\n- Total Problems: ${problems.length}\n- Solved: ${problems.filter(p => p.solvedAlone).length}\n- Topics: ${[...new Set(problems.map(p => p.topic))].join(', ')}\n\nUser Question: ${message}`;
+                
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${geminiApiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: context }]
+                        }]
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error?.message || `HTTP ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.candidates && data.candidates[0]) {
+                    const aiResponse = data.candidates[0].content.parts[0].text;
+                    addAIMessage('bot', aiResponse);
+                } else if (data.error) {
+                    addAIMessage('bot', `❌ Error: ${data.error.message}\n\n💡 Tip: Open this file via a web server or deploy to GitHub Pages for full AI functionality.`);
+                } else {
+                    addAIMessage('bot', '❌ Unexpected response from AI. Please try again.');
+                }
+            } catch (error) {
+                console.error('AI Error:', error);
+                addAIMessage('bot', `❌ Connection Error\n\n🔧 Solutions:\n1. Deploy to GitHub Pages (recommended)\n2. Use Live Server extension in VS Code\n3. Run: python -m http.server 8000\n\nError: ${error.message}`);
+            }
+            
+            sendBtn.disabled = false;
+            sendBtn.textContent = 'Send';
+        }
+        
+        // Generate Full Report
+        function generateFullReport() {
+            const reportContent = document.getElementById('reportContent');
+            reportContent.classList.add('active');
+            
+            // Analyze weak topics
+            const weakTopics = analyzeWeakTopics();
+            const revisionNeeded = getRevisionNeededProblems();
+            const recommendations = generateRecommendations();
+            const studyPlan = generateStudyPlan();
+            
+            reportContent.innerHTML = `
+                <div class="report-card weak">
+                    <h3>🎯 Weak Topics (Priority Focus)</h3>
+                    <ul class="report-list">
+                        ${weakTopics.map(t => `
+                            <li>
+                                <span class="priority-${t.priority}">${t.topic}</span> - 
+                                ${t.solved}/${t.total} solved (${t.rate}%) • 
+                                Avg: ${t.avgTime}min • 
+                                <strong>Practice ${t.needMore} more problems</strong>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+                
+                <div class="report-card">
+                    <h3>🔄 Revision Needed (${revisionNeeded.length} problems)</h3>
+                    <ul class="report-list">
+                        ${revisionNeeded.slice(0, 10).map(p => `
+                            <li>
+                                <strong>${escapeHtml(p.name)}</strong> (${p.topic}) - 
+                                ${p.reason}
+                            </li>
+                        `).join('')}
+                        ${revisionNeeded.length > 10 ? `<li><em>...and ${revisionNeeded.length - 10} more</em></li>` : ''}
+                    </ul>
+                </div>
+                
+                <div class="report-card good">
+                    <h3>💡 Personalized Recommendations</h3>
+                    <ul class="report-list">
+                        ${recommendations.map(r => `<li>${r}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div class="report-card">
+                    <h3>📅 7-Day Study Plan</h3>
+                    <ul class="report-list">
+                        ${studyPlan.map((day, i) => `
+                            <li>
+                                <strong>Day ${i + 1}:</strong> ${day}
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `;
+            
+            showNotification('📊 Report generated successfully!', 'success');
+        }
+        
+        function analyzeWeakTopics() {
+            const topicData = {};
+            
+            problems.forEach(p => {
+                if (!topicData[p.topic]) {
+                    topicData[p.topic] = { total: 0, solved: 0, times: [] };
+                }
+                topicData[p.topic].total++;
+                if (p.solvedAlone) {
+                    topicData[p.topic].solved++;
+                    if (p.timeTaken > 0) topicData[p.topic].times.push(p.timeTaken);
+                }
+            });
+            
+            return Object.entries(topicData)
+                .filter(([_, data]) => data.total >= 2)
+                .map(([topic, data]) => {
+                    const rate = Math.round((data.solved / data.total) * 100);
+                    const avgTime = data.times.length > 0 ? Math.round(data.times.reduce((a, b) => a + b, 0) / data.times.length) : 0;
+                    const needMore = Math.max(5 - data.solved, 0);
+                    const priority = rate < 40 ? 'high' : rate < 70 ? 'medium' : 'low';
+                    return { topic, rate, avgTime, needMore, priority, ...data };
+                })
+                .sort((a, b) => a.rate - b.rate)
+                .slice(0, 5);
+        }
+        
+        function getRevisionNeededProblems() {
+            const needRevision = [];
+            
+            problems.forEach(p => {
+                if (p.needRevision) {
+                    needRevision.push({ ...p, reason: 'Marked for revision' });
+                } else if (isDueForReview(p)) {
+                    needRevision.push({ ...p, reason: 'Due for spaced repetition' });
+                } else if (!p.solvedAlone) {
+                    needRevision.push({ ...p, reason: 'Not solved independently' });
+                } else if (p.confidence && p.confidence < 3) {
+                    needRevision.push({ ...p, reason: 'Low confidence level' });
+                }
+            });
+            
+            return needRevision;
+        }
+        
+        function generateRecommendations() {
+            const recommendations = [];
+            const solved = problems.filter(p => p.solvedAlone).length;
+            const total = problems.length;
+            const weakTopics = analyzeWeakTopics();
+            
+            if (total === 0) {
+                recommendations.push('🚀 Start by adding problems you\'re working on to track progress');
+                recommendations.push('📚 Begin with Easy problems in Arrays and Hashing');
+            } else if (solved < total * 0.3) {
+                recommendations.push('💪 Focus on solving more problems independently');
+                recommendations.push('📖 Review fundamentals before attempting new problems');
+            }
+            
+            if (weakTopics.length > 0) {
+                recommendations.push(`🎯 Priority: Master ${weakTopics[0].topic} - solve ${weakTopics[0].needMore} more problems`);
+            }
+            
+            const avgTime = calculateAverageTime();
+            if (avgTime > 45) {
+                recommendations.push('⏱️ Work on solving problems faster - practice pattern recognition');
+            }
+            
+            const streak = userStats.currentStreak || 0;
+            if (streak < 3) {
+                recommendations.push('🔥 Build consistency - aim for 7-day streak by solving 1 problem daily');
+            }
+            
+            recommendations.push('🧠 Use spaced repetition - review problems marked for revision');
+            recommendations.push('📝 Write detailed notes on mistakes and key insights');
+            
+            return recommendations;
+        }
+        
+        function generateStudyPlan() {
+            const weakTopics = analyzeWeakTopics();
+            const plan = [];
+            
+            if (weakTopics.length > 0) {
+                plan.push(`Focus on ${weakTopics[0].topic} - solve 2 Easy problems`);
+                if (weakTopics[1]) plan.push(`${weakTopics[1].topic} - solve 1 Easy, 1 Medium problem`);
+                if (weakTopics[2]) plan.push(`${weakTopics[2].topic} - solve 2 Medium problems`);
+            }
+            
+            plan.push('Review all problems marked for revision');
+            plan.push('Solve 1 Hard problem from your strongest topic');
+            plan.push('Practice problems due for spaced repetition');
+            plan.push('Rest day - review notes and watch solution videos');
+            
+            while (plan.length < 7) {
+                plan.push('Mixed practice - 1 Easy, 1 Medium, 1 Hard from different topics');
+            }
+            
+            return plan;
         }
         
         // Initialize app
