@@ -1899,6 +1899,42 @@ const firebaseConfig = {
             });
         }
 
+        // Google Sign-In
+        async function signInWithGoogle() {
+            if (!auth) {
+                showNotification('❌ Firebase not configured!', 'error');
+                return;
+            }
+            
+            try {
+                showNotification('⏳ Opening Google Sign-In...', 'info');
+                const provider = new firebase.auth.GoogleAuthProvider();
+                const result = await auth.signInWithPopup(provider);
+                
+                firebaseUser = result.user;
+                currentUser = result.user.email.split('@')[0];
+                
+                showNotification('✅ Logged in with Google!', 'success');
+                
+                // Show dashboard
+                document.getElementById('displayUsername').textContent = currentUser;
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                loadProblems();
+                setupRealtimeSync();
+                
+            } catch (error) {
+                console.error('Google Sign-In error:', error);
+                if (error.code === 'auth/popup-closed-by-user') {
+                    showNotification('⚠️ Sign-in cancelled', 'info');
+                } else if (error.code === 'auth/operation-not-allowed') {
+                    showNotification('❌ Google Sign-In not enabled! Enable it in Firebase Console → Authentication → Sign-in method', 'error');
+                } else {
+                    showNotification('❌ ' + error.message, 'error');
+                }
+            }
+        }
+        
         // Login with Firebase
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
