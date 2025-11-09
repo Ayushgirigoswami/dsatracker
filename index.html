@@ -3131,24 +3131,18 @@ const firebaseConfig = {
                     })
                 });
                 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error?.message || `HTTP ${response.status}`);
-                }
-                
                 const data = await response.json();
                 
                 if (data.candidates && data.candidates[0]) {
                     const aiResponse = data.candidates[0].content.parts[0].text;
                     addAIMessage('bot', aiResponse);
                 } else if (data.error) {
-                    addAIMessage('bot', `❌ Error: ${data.error.message}\n\n💡 Tip: Open this file via a web server or deploy to GitHub Pages for full AI functionality.`);
+                    addAIMessage('bot', `❌ Error: ${data.error.message}\n\nPlease check your API key.`);
                 } else {
                     addAIMessage('bot', '❌ Unexpected response from AI. Please try again.');
                 }
             } catch (error) {
-                console.error('AI Error:', error);
-                addAIMessage('bot', `❌ Connection Error\n\n🔧 Solutions:\n1. Deploy to GitHub Pages (recommended)\n2. Use Live Server extension in VS Code\n3. Run: python -m http.server 8000\n\nError: ${error.message}`);
+                addAIMessage('bot', `❌ Error: ${error.message}\n\nPlease check your internet connection and API key.`);
             }
             
             sendBtn.disabled = false;
