@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="description" content="Master Data Structures & Algorithms with intelligent spaced repetition, progress tracking, and performance analytics">
     <meta name="keywords" content="DSA, Data Structures, Algorithms, Coding Practice, Interview Prep, LeetCode">
     <meta name="author" content="DSA Tracker">
@@ -44,6 +47,17 @@
             width: 100%;
             max-width: 400px;
             animation: slideIn 0.5s ease-out;
+        }
+        
+        @media (max-width: 480px) {
+            .login-box {
+                padding: 30px 20px;
+                margin: 0 10px;
+            }
+            
+            .login-box h1 {
+                font-size: 24px;
+            }
         }
 
         @keyframes slideIn {
@@ -507,26 +521,93 @@
             margin-bottom: 10px;
         }
 
-        /* Responsive */
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .container {
+                max-width: 100%;
+            }
+            
+            .analytics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 10px;
+            }
+
             .header h1 {
-                font-size: 22px;
+                font-size: 20px;
+                text-align: center;
+            }
+            
+            .user-info {
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+            }
+            
+            .user-info span {
+                text-align: center;
+            }
+            
+            .btn-logout, .btn-export, .btn-import {
+                width: 100%;
+                padding: 12px;
+            }
+            
+            .nav-bar {
+                padding: 10px 15px;
+                justify-content: center;
+            }
+            
+            .nav-btn {
+                flex: 1;
+                min-width: 100px;
+                text-align: center;
+                padding: 8px 12px;
+                font-size: 13px;
             }
 
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            
+            .stat-card {
+                padding: 15px;
+            }
+            
+            .stat-card .number {
+                font-size: 24px;
             }
 
             .form-grid {
                 grid-template-columns: 1fr;
+                gap: 15px;
             }
 
             .form-actions {
                 flex-direction: column;
             }
+            
+            .problem-form {
+                padding: 20px 15px;
+            }
 
             .filter-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .filters {
+                padding: 15px;
             }
 
             .problems-container {
@@ -534,30 +615,71 @@
             }
 
             table {
-                font-size: 14px;
+                font-size: 12px;
+                min-width: 600px;
             }
 
             th, td {
-                padding: 10px;
+                padding: 8px 5px;
             }
             
-            .neetcode-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .neetcode-header {
+            .actions {
                 flex-direction: column;
-                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .btn-edit, .btn-delete {
+                width: 100%;
+            }
+            
+            .analytics-section {
+                padding: 20px 15px;
+            }
+            
+            .analytics-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .review-section {
+                padding: 20px 15px;
+            }
+            
+            .review-grid {
+                grid-template-columns: 1fr;
             }
         }
 
         @media (max-width: 480px) {
+            .header h1 {
+                font-size: 18px;
+            }
+            
             .stats-grid {
                 grid-template-columns: 1fr;
             }
 
             .stat-card .number {
                 font-size: 28px;
+            }
+            
+            .nav-btn {
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+            
+            table {
+                font-size: 11px;
+            }
+            
+            .difficulty-badge {
+                font-size: 10px;
+                padding: 3px 8px;
+            }
+            
+            .link-btn {
+                font-size: 11px;
+                padding: 5px 10px;
             }
         }
         
@@ -874,6 +996,42 @@
         .sync-status.active {
             display: block;
         }
+        
+        /* Navigation */
+        .nav-bar {
+            background: white;
+            padding: 15px 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .nav-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn.active {
+            background: #667eea;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -884,20 +1042,28 @@
             <p>Master your coding journey</p>
             <form id="loginForm">
                 <div class="input-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" placeholder="Enter your username" required>
+                    <label for="username">Email</label>
+                    <input type="email" id="username" placeholder="Enter your email" required>
                 </div>
                 <div class="input-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter your password" required>
+                    <input type="password" id="password" placeholder="Enter your password (min 6 characters)" required minlength="6">
                 </div>
-                <button type="submit" class="btn-primary">Login</button>
+                <button type="submit" class="btn-primary">Login / Sign Up</button>
+                <p style="margin-top: 15px; font-size: 0.9rem; color: #666; text-align: center;">First time? Account will be created automatically</p>
             </form>
         </div>
     </div>
 
     <!-- Dashboard -->
     <div id="dashboard" class="dashboard container">
+        <!-- Navigation -->
+        <div class="nav-bar">
+            <a href="dsatracker.html" class="nav-btn active">🎯 My Tracker</a>
+            <a href="neetcode.html" class="nav-btn">📚 NeetCode 150</a>
+            <a href="striver.html" class="nav-btn">🔥 Striver SDE 191</a>
+        </div>
+        
         <!-- Header -->
         <div class="header">
             <h1>🎯 DSA Master Tracker</h1>
@@ -908,7 +1074,7 @@
                     📤 Import
                     <input type="file" accept=".json" onchange="importData(event)" style="display: none;">
                 </label>
-                <button class="btn-export" onclick="syncToCloud()" title="Sync to cloud" style="background: #3498db;">☁️ Sync</button>
+                <button class="btn-export" onclick="manualSync()" title="Sync to cloud" style="background: #3498db;">☁️ Sync</button>
                 <button class="btn-logout" onclick="logout()">Logout</button>
             </div>
         </div>
@@ -949,75 +1115,7 @@
             <div id="reviewProblems" class="review-grid"></div>
         </div>
 
-        <!-- Striver SDE Sheet 191 Section -->
-        <div class="neetcode-section" style="border-left: 4px solid #e74c3c;">
-            <h2 style="color: #e74c3c;">🔥 Striver SDE Sheet - 191 Problems</h2>
-            <div class="neetcode-header">
-                <p>Complete interview preparation with Striver's curated DSA problems</p>
-                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                    <select id="striverFilter" onchange="renderStriverProblems()" style="padding: 8px; border-radius: 5px; border: 2px solid #e0e0e0;">
-                        <option value="">All Days (191)</option>
-                        <option value="Day 1">Day 1 - Arrays</option>
-                        <option value="Day 2">Day 2 - Arrays</option>
-                        <option value="Day 3">Day 3 - Array/Maths</option>
-                        <option value="Day 4">Day 4 - Hashing</option>
-                        <option value="Day 5">Day 5 - Linked List</option>
-                        <option value="Day 6">Day 6 - Linked List II</option>
-                        <option value="Day 7">Day 7 - 2-Pointer</option>
-                        <option value="Day 8">Day 8 - Greedy</option>
-                        <option value="Day 9">Day 9 - Recursion</option>
-                        <option value="Day 10">Day 10 - Backtracking</option>
-                        <option value="Day 11">Day 11 - Binary Search</option>
-                        <option value="Day 12">Day 12 - Heaps</option>
-                        <option value="Day 13">Day 13 - Stack/Queue</option>
-                        <option value="Day 14">Day 14 - Stack/Queue II</option>
-                        <option value="Day 15">Day 15 - String</option>
-                        <option value="Day 16">Day 16 - String II</option>
-                        <option value="Day 17">Day 17 - Binary Tree</option>
-                        <option value="Day 18">Day 18 - Binary Tree II</option>
-                        <option value="Day 19">Day 19 - Binary Tree III</option>
-                        <option value="Day 20">Day 20 - BST</option>
-                        <option value="Day 21">Day 21 - BST II</option>
-                        <option value="Day 22">Day 22 - Misc</option>
-                        <option value="Day 23">Day 23 - Graph</option>
-                        <option value="Day 24">Day 24 - Graph II</option>
-                        <option value="Day 25">Day 25 - DP</option>
-                        <option value="Day 26">Day 26 - DP II</option>
-                        <option value="Day 27">Day 27 - Trie</option>
-                        <option value="Bonus">Bonus Problems</option>
-                    </select>
-                    <button class="btn-import-neetcode" style="background: #e74c3c;" onclick="importStriver191()">Import All 191</button>
-                </div>
-            </div>
-            <div id="striverProblems" class="neetcode-grid"></div>
-        </div>
 
-        <!-- NeetCode 150 Section -->
-        <div class="neetcode-section">
-            <h2>🎯 NeetCode 150 - Curated Problems</h2>
-            <div class="neetcode-header">
-                <p>Master the most important coding interview problems with video explanations</p>
-                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                    <select id="neetcodeFilter" onchange="renderNeetCodeProblems()" style="padding: 8px; border-radius: 5px; border: 2px solid #e0e0e0;">
-                        <option value="">All Topics (150)</option>
-                        <option value="Arrays">Arrays & Hashing (9)</option>
-                        <option value="Two Pointers">Two Pointers (5)</option>
-                        <option value="Sliding Window">Sliding Window (6)</option>
-                        <option value="Stack">Stack (7)</option>
-                        <option value="Binary Search">Binary Search (7)</option>
-                        <option value="Linked List">Linked List (11)</option>
-                        <option value="Trees">Trees & Tries (18)</option>
-                        <option value="Heaps">Heaps (7)</option>
-                        <option value="Backtracking">Backtracking (9)</option>
-                        <option value="Graphs">Graphs (19)</option>
-                        <option value="Dynamic Programming">Dynamic Programming (23)</option>
-                        <option value="Greedy">Greedy & Intervals & Math (29)</option>
-                    </select>
-                    <button class="btn-import-neetcode" onclick="importNeetCode150()">Import All 150</button>
-                </div>
-            </div>
-            <div id="neetcodeProblems" class="neetcode-grid"></div>
-        </div>
 
         <!-- Analytics Dashboard -->
         <div class="analytics-section">
@@ -1212,27 +1310,52 @@
     
     <div id="syncStatus" class="sync-status">☁️ Syncing...</div>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
     <script>
         /*
-        🎉 FREE CLOUD SYNC SETUP (Lifetime Free!):
+        🎉 FREE CLOUD SYNC - Works Across All Devices!
         
-        1. Click the "☁️ Sync" button
-        2. Follow the prompt to get GitHub token
-        3. Done! Your data syncs automatically
+        ✅ 100% Free Forever (No Credit Card)
+        ✅ Email/Password Login
+        ✅ Real-time Sync Across Devices
+        ✅ Mobile + Desktop Support
+        ✅ 1GB Free Storage
         
-        ✅ 100% Free Forever
-        ✅ No Credit Card
-        ✅ Unlimited Storage
-        ✅ Private & Secure
-        ✅ Works Across All Devices
+        Setup: Replace firebaseConfig below with your own (see README)
         */
+        
+        // Firebase Configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDbQ11ru7XXSKK8u-IiByG7mk7eqAuGlI8",
+  authDomain: "dsa-tracker-33f06.firebaseapp.com",
+  databaseURL: "https://dsa-tracker-33f06-default-rtdb.firebaseio.com",
+  projectId: "dsa-tracker-33f06",
+  storageBucket: "dsa-tracker-33f06.firebasestorage.app",
+  messagingSenderId: "130776484182",
+  appId: "1:130776484182:web:b7323187b49007dd4daef7",
+  measurementId: "G-8CKENJ43LG"
+};
+        
+        // Initialize Firebase
+        let firebaseApp, auth, database;
+        try {
+            firebaseApp = firebase.initializeApp(firebaseConfig);
+            auth = firebase.auth();
+            database = firebase.database();
+        } catch (error) {
+            console.log('Firebase not configured. Using local storage only.');
+        }
         
         let problems = [];
         let editingId = null;
         let currentUser = '';
         let userStats = {};
-        let githubToken = localStorage.getItem('githubToken') || '';
-        let gistId = localStorage.getItem('gistId') || '';
+        let firebaseUser = null;
         
         // Spaced repetition intervals in days
         const REVIEW_INTERVALS = [1, 3, 7, 14, 30];
@@ -1621,29 +1744,202 @@
             {num: 150, name: "Reverse Integer", topic: "Greedy", difficulty: "Medium", pattern: "Bit Manipulation", leetcode: "https://leetcode.com/problems/reverse-integer/", video: "https://www.youtube.com/watch?v=HAgLH58IgJQ"}
         ];
 
-        // Login
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+        // Setup realtime sync
+        function setupRealtimeSync() {
+            if (!database || !firebaseUser) return;
+            
+            const userRef = database.ref('users/' + firebaseUser.uid);
+            
+            // Listen for changes from other devices
+            userRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data && data.problems) {
+                    const remoteTimestamp = data.lastSync || 0;
+                    const localTimestamp = parseInt(localStorage.getItem('lastSyncTime_' + currentUser) || '0');
+                    
+                    // Only update if remote is newer
+                    if (remoteTimestamp > localTimestamp) {
+                        problems = data.problems;
+                        userStats = data.stats || {};
+                        localStorage.setItem('lastSyncTime_' + currentUser, remoteTimestamp.toString());
+                        renderProblems();
+                        updateStats();
+                        renderAnalytics();
+                        showNotification('📥 Synced from cloud', 'info');
+                    }
+                }
+            });
+        }
+        
+        // Sync to Firebase
+        async function syncToFirebase() {
+            if (!database || !firebaseUser) return;
+            
+            const syncEl = document.getElementById('syncStatus');
+            syncEl.textContent = '☁️ Syncing...';
+            syncEl.classList.add('active');
+            
+            try {
+                const userRef = database.ref('users/' + firebaseUser.uid);
+                const timestamp = Date.now();
+                
+                await userRef.set({
+                    problems: problems,
+                    stats: userStats,
+                    lastSync: timestamp,
+                    email: firebaseUser.email
+                });
+                
+                localStorage.setItem('lastSyncTime_' + currentUser, timestamp.toString());
+                syncEl.textContent = '✅ Synced!';
+                setTimeout(() => syncEl.classList.remove('active'), 2000);
+            } catch (error) {
+                console.error('Sync error:', error);
+                syncEl.textContent = '❌ Sync failed';
+                setTimeout(() => syncEl.classList.remove('active'), 2000);
+            }
+        }
+        
+        // Check if user is already logged in
+        function checkLogin() {
+            return new Promise((resolve) => {
+                if (auth) {
+                    // Firebase auth persists automatically
+                    auth.onAuthStateChanged((user) => {
+                        if (user) {
+                            firebaseUser = user;
+                            currentUser = user.email.split('@')[0];
+                            localStorage.setItem('dsaTrackerUser', user.email);
+                            document.getElementById('displayUsername').textContent = currentUser;
+                            document.getElementById('loginPage').style.display = 'none';
+                            document.getElementById('dashboard').style.display = 'block';
+                            loadProblems();
+                            setupRealtimeSync();
+                            resolve(true);
+                        } else {
+                            // No Firebase user, clear local storage
+                            localStorage.removeItem('dsaTrackerUser');
+                            document.getElementById('loginPage').style.display = 'flex';
+                            document.getElementById('dashboard').style.display = 'none';
+                            resolve(false);
+                        }
+                    });
+                } else {
+                    // Firebase not configured
+                    resolve(false);
+                }
+            });
+        }
 
-            if (username && password) {
-                currentUser = username;
-                document.getElementById('displayUsername').textContent = username;
-                document.getElementById('loginPage').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-                loadProblems();
+        // Login with Firebase
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            // Validate inputs
+            if (!email || !password) {
+                showNotification('❌ Please enter email and password!', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showNotification('❌ Password must be at least 6 characters!', 'error');
+                return;
+            }
+            
+            // Validate email format
+            if (!email.includes('@') || !email.includes('.')) {
+                showNotification('❌ Please enter a valid email address!', 'error');
+                return;
+            }
+
+            if (auth && database) {
+                try {
+                    showNotification('⏳ Connecting to Firebase...', 'info');
+                    
+                    // Try to sign in first
+                    try {
+                        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                        firebaseUser = userCredential.user;
+                        currentUser = email.split('@')[0];
+                        showNotification('✅ Logged in successfully!', 'success');
+                    } catch (signInError) {
+                        // If user doesn't exist, create new account
+                        if (signInError.code === 'auth/user-not-found') {
+                            showNotification('⏳ Creating new account...', 'info');
+                            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                            firebaseUser = userCredential.user;
+                            currentUser = email.split('@')[0];
+                            showNotification('✅ Account created! Welcome!', 'success');
+                        } else if (signInError.code === 'auth/wrong-password') {
+                            showNotification('❌ Wrong password! Try again.', 'error');
+                            return;
+                        } else if (signInError.code === 'auth/invalid-email') {
+                            showNotification('❌ Invalid email format!', 'error');
+                            return;
+                        } else if (signInError.code === 'auth/invalid-credential') {
+                            showNotification('❌ Invalid credentials! Check email/password or create new account.', 'error');
+                            return;
+                        } else if (signInError.code === 'auth/operation-not-allowed') {
+                            showNotification('❌ Email/Password login not enabled! Enable it in Firebase Console → Authentication → Sign-in method', 'error');
+                            console.error('SETUP REQUIRED: Enable Email/Password authentication in Firebase Console');
+                            return;
+                        } else {
+                            throw signInError;
+                        }
+                    }
+                    
+                    // Success - show dashboard
+                    document.getElementById('displayUsername').textContent = currentUser;
+                    document.getElementById('loginPage').style.display = 'none';
+                    document.getElementById('dashboard').style.display = 'block';
+                    loadProblems();
+                    setupRealtimeSync();
+                    
+                } catch (error) {
+                    console.error('Firebase error:', error);
+                    let errorMsg = error.message;
+                    if (error.code === 'auth/operation-not-allowed') {
+                        errorMsg = 'Email/Password authentication not enabled in Firebase Console!';
+                    }
+                    showNotification('❌ ' + errorMsg, 'error');
+                }
+            } else {
+                // Firebase not initialized
+                showNotification('❌ Firebase not configured! Check console.', 'error');
+                console.error('Firebase auth or database not initialized');
+                console.log('Auth:', auth);
+                console.log('Database:', database);
             }
         });
 
         // Logout
         function logout() {
-            document.getElementById('loginPage').style.display = 'flex';
-            document.getElementById('dashboard').style.display = 'none';
-            document.getElementById('loginForm').reset();
-            currentUser = '';
-            problems = [];
-            editingId = null;
+            if (confirm('Are you sure you want to logout?')) {
+                if (auth && firebaseUser) {
+                    auth.signOut().then(() => {
+                        localStorage.removeItem('dsaTrackerUser');
+                        document.getElementById('loginPage').style.display = 'flex';
+                        document.getElementById('dashboard').style.display = 'none';
+                        document.getElementById('loginForm').reset();
+                        currentUser = '';
+                        problems = [];
+                        editingId = null;
+                        firebaseUser = null;
+                        showNotification('✅ Logged out successfully!', 'success');
+                    });
+                }
+            }
+        }
+        
+        // Manual sync button
+        function manualSync() {
+            if (database && firebaseUser) {
+                syncToFirebase();
+            } else {
+                showNotification('⚠️ Firebase not configured. See FIREBASE_SETUP.md', 'info');
+            }
         }
 
         // Load problems from memory
@@ -1656,8 +1952,6 @@
                 renderProblems();
                 updateStats();
                 renderAnalytics();
-                renderNeetCodeProblems();
-                renderStriverProblems();
                 checkDailyStreak();
             } catch (error) {
                 console.error('Error loading data:', error);
@@ -1673,8 +1967,10 @@
             try {
                 localStorage.setItem('dsaProblems_' + currentUser, JSON.stringify(problems));
                 localStorage.setItem('dsaStats_' + currentUser, JSON.stringify(userStats));
-                if (githubToken && gistId) {
-                    syncToCloud();
+                
+                // Auto-sync to Firebase if connected
+                if (database && firebaseUser) {
+                    syncToFirebase();
                 }
             } catch (error) {
                 console.error('Error saving data:', error);
@@ -1792,6 +2088,19 @@
             }
         }
 
+        // Toggle problem status
+        function toggleStatus(id) {
+            const problem = problems.find(p => p.id === id);
+            if (problem) {
+                problem.solvedAlone = !problem.solvedAlone;
+                saveProblems();
+                renderProblems();
+                updateStats();
+                renderAnalytics();
+                showNotification(`Status updated to ${problem.solvedAlone ? 'Solved' : 'Pending'}!`, 'success');
+            }
+        }
+
         // Delete Problem
         function deleteProblem(id) {
             if (confirm('Are you sure you want to delete this problem?')) {
@@ -1855,9 +2164,12 @@
                     <td>${escapeHtml(p.topic)}</td>
                     <td><span class="difficulty-badge difficulty-${p.difficulty.toLowerCase()}">${p.difficulty}</span></td>
                     <td>
-                        ${p.solvedAlone ? '<span class="status-solved">✓ Solved</span>' : '<span class="status-pending">⏳ Pending</span>'}
-                        ${p.needRevision ? '<br><span class="revision-needed">🔄 Revision</span>' : ''}
-                        ${isDueForReview(p) ? '<br><span class="revision-needed">⏰ Due Review</span>' : ''}
+                        <label style="cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" ${p.solvedAlone ? 'checked' : ''} onchange="toggleStatus(${p.id})" style="cursor: pointer;">
+                            <span class="${p.solvedAlone ? 'status-solved' : 'status-pending'}">${p.solvedAlone ? '✓ Solved' : '⏳ Pending'}</span>
+                        </label>
+                        ${p.needRevision ? '<span class="revision-needed" style="display: block; margin-top: 5px;">🔄 Revision</span>' : ''}
+                        ${isDueForReview(p) ? '<span class="revision-needed" style="display: block; margin-top: 5px;">⏰ Due Review</span>' : ''}
                     </td>
                     <td>${p.timeTaken ? p.timeTaken + ' min' : '-'}</td>
                     <td>${p.notes ? escapeHtml(p.notes.substring(0, 50)) + (p.notes.length > 50 ? '...' : '') : '-'}</td>
@@ -1913,9 +2225,12 @@
                     <td>${escapeHtml(p.topic)}</td>
                     <td><span class="difficulty-badge difficulty-${p.difficulty.toLowerCase()}">${p.difficulty}</span></td>
                     <td>
-                        ${p.solvedAlone ? '<span class="status-solved">✓ Solved</span>' : '<span class="status-pending">⏳ Pending</span>'}
-                        ${p.needRevision ? '<br><span class="revision-needed">🔄 Revision</span>' : ''}
-                        ${isDueForReview(p) ? '<br><span class="revision-needed">⏰ Due Review</span>' : ''}
+                        <label style="cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" ${p.solvedAlone ? 'checked' : ''} onchange="toggleStatus(${p.id})" style="cursor: pointer;">
+                            <span class="${p.solvedAlone ? 'status-solved' : 'status-pending'}">${p.solvedAlone ? '✓ Solved' : '⏳ Pending'}</span>
+                        </label>
+                        ${p.needRevision ? '<span class="revision-needed" style="display: block; margin-top: 5px;">🔄 Revision</span>' : ''}
+                        ${isDueForReview(p) ? '<span class="revision-needed" style="display: block; margin-top: 5px;">⏰ Due Review</span>' : ''}
                     </td>
                     <td>${p.timeTaken ? p.timeTaken + ' min' : '-'}</td>
                     <td>${p.notes ? escapeHtml(p.notes.substring(0, 50)) + (p.notes.length > 50 ? '...' : '') : '-'}</td>
@@ -2301,245 +2616,9 @@
             });
         }
         
-        // Import NeetCode 150 problems
-        function importNeetCode150() {
-            if (confirm('This will add all 150 NeetCode problems to your tracker. Continue?')) {
-                let addedCount = 0;
-                NEETCODE_150.forEach(problem => {
-                    const exists = problems.some(p => 
-                        p.name.toLowerCase() === problem.name.toLowerCase() && 
-                        p.topic === problem.topic
-                    );
-                    
-                    if (!exists) {
-                        const newProblem = {
-                            id: Date.now() + Math.random(),
-                            name: problem.name,
-                            pattern: problem.pattern,
-                            topic: problem.topic,
-                            difficulty: problem.difficulty,
-                            link: problem.leetcode,
-                            timeTaken: 0,
-                            notes: `NeetCode #${problem.num} - Video: ${problem.video}`,
-                            solvedAlone: false,
-                            needRevision: false,
-                            confidence: 3,
-                            date: new Date().toLocaleDateString(),
-                            lastReviewed: new Date().toISOString(),
-                            reviewCount: 0,
-                            nextReview: calculateNextReview(3, 0),
-                            isNeetCode: true,
-                            neetcodeNum: problem.num
-                        };
-                        problems.push(newProblem);
-                        addedCount++;
-                    }
-                });
-                
-                saveProblems();
-                renderProblems();
-                updateStats();
-                renderAnalytics();
-                renderNeetCodeProblems();
-                showNotification(`Added ${addedCount} new problems from NeetCode 150!`, 'success');
-            }
-        }
+
         
-        // Render Striver problems
-        function renderStriverProblems() {
-            const container = document.getElementById('striverProblems');
-            const filterDay = document.getElementById('striverFilter').value;
-            
-            const filteredProblems = filterDay ? 
-                STRIVER_191.filter(p => p.day === filterDay) : 
-                STRIVER_191;
-            
-            container.innerHTML = filteredProblems.map(problem => {
-                const isSolved = problems.some(p => 
-                    p.name.toLowerCase() === problem.name.toLowerCase() && 
-                    p.solvedAlone
-                );
-                const isAdded = problems.some(p => 
-                    p.name.toLowerCase() === problem.name.toLowerCase()
-                );
-                
-                return `
-                    <div class="neetcode-card ${isSolved ? 'solved' : ''}" style="border-left: 3px solid #e74c3c;">
-                        <h4>#${problem.num}. ${escapeHtml(problem.name)}</h4>
-                        <div class="neetcode-meta">
-                            <span>${problem.day} • ${problem.topic}</span>
-                            <span class="difficulty-badge difficulty-${problem.difficulty.toLowerCase()}">${problem.difficulty}</span>
-                        </div>
-                        <div class="neetcode-actions">
-                            <a href="${problem.video}" target="_blank" class="btn-video" rel="noopener">📺 Video</a>
-                            <a href="${problem.leetcode}" target="_blank" class="btn-problem" rel="noopener">🔗 Problem</a>
-                            <button class="btn-add-to-tracker" 
-                                    onclick="addStriverProblem(${problem.num}, '${escapeHtml(problem.name)}', '${problem.topic}', '${problem.difficulty}', '${problem.leetcode}', '${problem.video}', '${problem.day}')"
-                                    ${isAdded ? 'disabled' : ''}>
-                                ${isAdded ? '✓ Added' : '+ Add'}
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-        
-        // Render NeetCode problems
-        function renderNeetCodeProblems() {
-            const container = document.getElementById('neetcodeProblems');
-            const filterTopic = document.getElementById('neetcodeFilter').value;
-            
-            const filteredProblems = filterTopic ? 
-                NEETCODE_150.filter(p => p.topic === filterTopic) : 
-                NEETCODE_150;
-            
-            container.innerHTML = filteredProblems.map(problem => {
-                const isSolved = problems.some(p => 
-                    p.name.toLowerCase() === problem.name.toLowerCase() && 
-                    p.solvedAlone
-                );
-                const isAdded = problems.some(p => 
-                    p.name.toLowerCase() === problem.name.toLowerCase()
-                );
-                
-                return `
-                    <div class="neetcode-card ${isSolved ? 'solved' : ''}">
-                        <h4>#${problem.num}. ${escapeHtml(problem.name)}</h4>
-                        <div class="neetcode-meta">
-                            <span>${problem.topic} • ${problem.pattern}</span>
-                            <span class="difficulty-badge difficulty-${problem.difficulty.toLowerCase()}">${problem.difficulty}</span>
-                        </div>
-                        <div class="neetcode-actions">
-                            <a href="${problem.video}" target="_blank" class="btn-video" rel="noopener">📺 Video</a>
-                            <a href="${problem.leetcode}" target="_blank" class="btn-problem" rel="noopener">🔗 LeetCode</a>
-                            <button class="btn-add-to-tracker" 
-                                    onclick="addNeetCodeProblem(${problem.num}, '${escapeHtml(problem.name)}', '${escapeHtml(problem.pattern)}', '${problem.topic}', '${problem.difficulty}', '${problem.leetcode}', '${problem.video}')"
-                                    ${isAdded ? 'disabled' : ''}>
-                                ${isAdded ? '✓ Added' : '+ Add'}
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-        
-        // Add individual Striver problem
-        function addStriverProblem(num, name, topic, difficulty, leetcode, video, day) {
-            const exists = problems.some(p => 
-                p.name.toLowerCase() === name.toLowerCase()
-            );
-            
-            if (!exists) {
-                const newProblem = {
-                    id: Date.now(),
-                    name: name,
-                    pattern: topic,
-                    topic: topic,
-                    difficulty: difficulty,
-                    link: leetcode,
-                    timeTaken: 0,
-                    notes: `Striver ${day} #${num} - Video: ${video}`,
-                    solvedAlone: false,
-                    needRevision: false,
-                    confidence: 3,
-                    date: new Date().toLocaleDateString(),
-                    lastReviewed: new Date().toISOString(),
-                    reviewCount: 0,
-                    nextReview: calculateNextReview(3, 0),
-                    isStriver: true,
-                    striverNum: num
-                };
-                
-                problems.unshift(newProblem);
-                saveProblems();
-                renderProblems();
-                updateStats();
-                renderAnalytics();
-                renderStriverProblems();
-                showNotification(`#${num}. "${name}" added!`, 'success');
-            }
-        }
-        
-        // Import Striver 191 problems
-        function importStriver191() {
-            if (confirm('Add all 191 Striver SDE Sheet problems to tracker?')) {
-                let addedCount = 0;
-                STRIVER_191.forEach(problem => {
-                    const exists = problems.some(p => 
-                        p.name.toLowerCase() === problem.name.toLowerCase()
-                    );
-                    
-                    if (!exists) {
-                        const newProblem = {
-                            id: Date.now() + Math.random(),
-                            name: problem.name,
-                            pattern: problem.topic,
-                            topic: problem.topic,
-                            difficulty: problem.difficulty,
-                            link: problem.leetcode,
-                            timeTaken: 0,
-                            notes: `Striver ${problem.day} #${problem.num} - Video: ${problem.video}`,
-                            solvedAlone: false,
-                            needRevision: false,
-                            confidence: 3,
-                            date: new Date().toLocaleDateString(),
-                            lastReviewed: new Date().toISOString(),
-                            reviewCount: 0,
-                            nextReview: calculateNextReview(3, 0),
-                            isStriver: true,
-                            striverNum: problem.num
-                        };
-                        problems.push(newProblem);
-                        addedCount++;
-                    }
-                });
-                
-                saveProblems();
-                renderProblems();
-                updateStats();
-                renderAnalytics();
-                renderStriverProblems();
-                showNotification(`Added ${addedCount} Striver problems!`, 'success');
-            }
-        }
-        
-        // Add individual NeetCode problem
-        function addNeetCodeProblem(num, name, pattern, topic, difficulty, leetcode, video) {
-            const exists = problems.some(p => 
-                p.name.toLowerCase() === name.toLowerCase() && 
-                p.topic === topic
-            );
-            
-            if (!exists) {
-                const newProblem = {
-                    id: Date.now(),
-                    name: name,
-                    pattern: pattern,
-                    topic: topic,
-                    difficulty: difficulty,
-                    link: leetcode,
-                    timeTaken: 0,
-                    notes: `NeetCode #${num} - Video: ${video}`,
-                    solvedAlone: false,
-                    needRevision: false,
-                    confidence: 3,
-                    date: new Date().toLocaleDateString(),
-                    lastReviewed: new Date().toISOString(),
-                    reviewCount: 0,
-                    nextReview: calculateNextReview(3, 0),
-                    isNeetCode: true,
-                    neetcodeNum: num
-                };
-                
-                problems.unshift(newProblem);
-                saveProblems();
-                renderProblems();
-                updateStats();
-                renderAnalytics();
-                renderNeetCodeProblems();
-                showNotification(`#${num}. "${name}" added to tracker!`, 'success');
-            }
-        }
+
         
         // Cloud Sync Functions
         async function syncToCloud() {
@@ -2632,9 +2711,21 @@
         
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
-            loadFromCloud();
-            // Focus on username field
-            document.getElementById('username').focus();
+            // Check if user is already logged in
+            if (!checkLogin()) {
+                // Focus on username field if not logged in
+                document.getElementById('username').focus();
+            }
+            
+            // Show Firebase status
+            setTimeout(() => {
+                if (!auth || !database) {
+                    showNotification('ℹ️ Firebase not configured. Using local storage. See FIREBASE_SETUP.md for cloud sync!', 'info');
+                } else {
+                    console.log('✅ Firebase initialized successfully');
+                    console.log('📝 Make sure Email/Password is enabled in Firebase Console → Authentication → Sign-in method');
+                }
+            }, 2000);
             
             // Add keyboard shortcuts
             document.addEventListener('keydown', function(e) {
