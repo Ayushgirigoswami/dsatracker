@@ -594,6 +594,47 @@
             }
         }
         
+        /* Notification Settings */
+        .notification-settings {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .notification-settings h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .notification-settings p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .notification-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .notification-controls input[type="email"] {
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            width: 300px;
+            max-width: 100%;
+            font-size: 14px;
+        }
+        
+        .notification-controls input[type="email"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -602,6 +643,20 @@
             .container {
                 padding: 0;
                 max-width: 100%;
+            }
+            
+            .notification-settings {
+                padding: 15px;
+            }
+            
+            .notification-controls {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            
+            .notification-controls input[type="email"] {
+                width: 100%;
             }
             
             .header {
@@ -1707,6 +1762,22 @@
             </div>
         </div>
 
+        <!-- Email Notification Settings -->
+        <div class="notification-settings">
+            <h3>📧 Email Notifications</h3>
+            <p>Get weekly progress reports, revision reminders, and contest alerts</p>
+            <div class="notification-controls">
+                <input type="email" id="notificationEmail" placeholder="Enter your email">
+                <button onclick="enableNotifications()" class="btn-export" style="background: #2ecc71;">
+                    📧 Enable Notifications
+                </button>
+                <button onclick="disableNotifications()" class="btn-logout" style="background: #95a5a6;">
+                    🔕 Disable
+                </button>
+            </div>
+            <div id="notificationStatus" style="margin-top: 10px; font-size: 14px;"></div>
+        </div>
+
         <!-- Stats -->
         <div class="stats-grid">
             <div class="stat-card">
@@ -1971,10 +2042,16 @@
     
     <div id="syncStatus" class="sync-status">☁️ Syncing...</div>
 
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <!-- Notification Manager -->
+    <script src="notification-manager.js"></script>
     
     <script>
         /*
@@ -2638,6 +2715,100 @@ const firebaseConfig = {
                 showNotification('⚠️ Firebase not configured. See FIREBASE_SETUP.md', 'info');
             }
         }
+        
+        // Enable email notifications
+        async function enableNotifications() {
+            const email = document.getElementById('notificationEmail').value.trim();
+            
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email) {
+                showNotification('❌ Please enter your email address!', 'error');
+                return;
+            }
+            
+            if (!emailRegex.test(email)) {
+                showNotification('❌ Please enter a valid email address!', 'error');
+                return;
+            }
+            
+            if (typeof notificationManager === 'undefined') {
+                showNotification('❌ Notification system not loaded. Please refresh the page.', 'error');
+                return;
+            }
+            
+            try {
+                // Enable notifications first
+                notificationManager.enableNotifications(email);
+                
+                // Update status to show enabling
+                document.getElementById('notificationStatus').innerHTML = 
+                    '⏳ <span style="color: #667eea;">Enabling notifications and sending test email...</span>';
+                
+                // Send test email
+                showNotification('⏳ Sending test email to ' + email + '...', 'info');
+                await notificationManager.sendTestEmail();
+                
+                // Success
+                document.getElementById('notificationStatus').innerHTML = 
+                    '✅ <span style="color: green;">Notifications enabled for ' + email + ' (test email sent successfully!)</span>';
+                showNotification('📧 Email notifications enabled! Check your inbox (and spam folder) for the test email.', 'success');
+                
+            } catch (error) {
+                console.error('Email notification setup failed:', error);
+                
+                // Show detailed error message
+                const errorMessage = error.message || 'Unknown error occurred';
+                document.getElementById('notificationStatus').innerHTML = 
+                    '❌ <span style="color: #e74c3c;">Setup failed: ' + errorMessage + '</span>';
+                
+                if (errorMessage.includes('EmailJS SDK not loaded')) {
+                    showNotification('❌ EmailJS not loaded. Please refresh the page and try again.', 'error');
+                } else if (errorMessage.includes('authentication failed')) {
+                    showNotification('❌ EmailJS authentication failed. Please check the configuration.', 'error');
+                } else if (errorMessage.includes('quota exceeded')) {
+                    showNotification('❌ Email quota exceeded. Please try again later.', 'error');
+                } else if (errorMessage.includes('Invalid email format')) {
+                    showNotification('❌ Invalid email format. Please enter a valid email address.', 'error');
+                } else {
+                    showNotification('❌ Failed to send test email: ' + errorMessage, 'error');
+                }
+            }
+        }
+        
+        // Disable email notifications
+        function disableNotifications() {
+            if (typeof notificationManager !== 'undefined') {
+                notificationManager.disableNotifications();
+                document.getElementById('notificationStatus').innerHTML = 
+                    '🔕 <span style="color: #999;">Notifications disabled</span>';
+                showNotification('🔕 Email notifications disabled', 'info');
+            } else {
+                showNotification('❌ Notification system not loaded', 'error');
+            }
+        }
+        
+        // Load notification status on page load
+        function loadNotificationStatus() {
+            setTimeout(() => {
+                if (typeof notificationManager !== 'undefined') {
+                    if (notificationManager.isNotificationsEnabled()) {
+                        const email = notificationManager.getUserEmail();
+                        document.getElementById('notificationEmail').value = email;
+                        document.getElementById('notificationStatus').innerHTML = 
+                            '✅ <span style="color: green;">Notifications enabled for ' + email + '</span>';
+                    } else {
+                        document.getElementById('notificationStatus').innerHTML = 
+                            '🔕 <span style="color: #999;">Email notifications are disabled</span>';
+                    }
+                } else {
+                    document.getElementById('notificationStatus').innerHTML = 
+                        '⚠️ <span style="color: orange;">Notification system loading...</span>';
+                    // Try again in 2 seconds
+                    setTimeout(loadNotificationStatus, 2000);
+                }
+            }, 500);
+        }
 
         // Load problems from memory
         function loadProblems() {
@@ -2650,6 +2821,11 @@ const firebaseConfig = {
                 updateStats();
                 renderAnalytics();
                 checkDailyStreak();
+                
+                // Load notification status
+                setTimeout(() => {
+                    loadNotificationStatus();
+                }, 1000); // Wait for notification manager to load
             } catch (error) {
                 console.error('Error loading data:', error);
                 problems = [];
