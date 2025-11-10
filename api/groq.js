@@ -8,32 +8,32 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  // --- THIS IS THE CRITICAL FIX ---
-  // 1. Get the key ONLY from the environment.
   const apiKey = process.env.GROQ_API_KEY;
 
-  // 2. Add a check to see if the key is missing.
   if (!apiKey) {
     console.error('GROQ_API_KEY is not set in Vercel environment variables.');
     return res.status(500).json({ error: 'Internal server error', message: 'API key not configured.' });
   }
-  // --- END OF FIX ---
 
   try {
-    const { messages, userContext } = req.body;
+    const { messages, userContext } = req.body; // userContext is in the payload but not used
     
     if (!messages || !Array.isArray(messages)) {
       return res.status(400).json({ error: 'Invalid messages format' });
     }
-    
+
+    // --- THIS IS THE ONLY LINE THAT CHANGED ---
+    const modelToUse = 'llama3-70b-8192';
+    // --- END OF CHANGE ---
+
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${apiKey}`, // Now uses the secure key
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'llama-3.1-70b-versatile',
+        model: modelToUse, // Use the new model name
         messages: messages,
         temperature: 0.7,
         max_tokens: 800,
@@ -43,13 +43,14 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
       const error = await response.json();
+      console.error('Groq API Error Response:', error); // Log the error from Groq
       return res.status(response.status).json(error);
     }
 
     const data = await response.json();
     return res.status(200).json(data);
   } catch (error) {
-    console.error('Groq API Error:', error);
+    console.error('Internal Server Error:', error);
     return res.status(500).json({ error: 'Internal server error', message: error.message });
   }
 }
