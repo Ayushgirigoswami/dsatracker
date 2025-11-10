@@ -1,8 +1,8 @@
 // api/groq.js
 export default async function handler(req, res) {
   
-  // --- NEW MARKER LINE TO TEST DEPLOYMENT ---
-  console.log('--- RUNNING LATEST GROQ.JS v3 (with llama3 model) ---');
+  // --- NEW MARKER LINE TO TEST DEPLOYMENT v5 ---
+  console.log('--- RUNNING LATEST GROQ.JS v5 (with llama-3.3-70b-versatile) ---');
   // --- END OF NEW LINE ---
 
   // CORS headers
@@ -27,7 +27,9 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid messages format' });
     }
 
-    const modelToUse = 'llama3-70b-8192';
+    // --- THIS IS THE NEW, CURRENTLY ACTIVE MODEL ---
+    const modelToUse = 'llama-3.3-70b-versatile';
+    // --- END OF CHANGE ---
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -36,7 +38,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: modelToUse, // Using the correct model
+        model: modelToUse, // Use the new model name
         messages: messages,
         temperature: 0.7,
         max_tokens: 800,
@@ -46,8 +48,7 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
       const error = await response.json();
-      // THIS IS THE ERROR WE NEED TO SEE
-      console.error('Groq API Error Response:', error); 
+      console.error('Groq API Error Response:', error); // Log the error from Groq
       return res.status(response.status).json(error);
     }
 
