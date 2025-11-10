@@ -4,7 +4,7 @@
 
 ### *Master Data Structures & Algorithms with Intelligent Tracking*
 
-[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Now-success?style=for-the-badge)](https://your-demo-url.vercel.app)
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Now-success?style=for-the-badge)](https://dsatracker-ecru.vercel.app/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 [![Firebase](https://img.shields.io/badge/Firebase-Enabled-orange?style=for-the-badge&logo=firebase)](https://firebase.google.com)
 [![Groq AI](https://img.shields.io/badge/Groq_AI-Powered-purple?style=for-the-badge)](https://groq.com)
@@ -66,20 +66,6 @@
 
 ---
 
-## 🎬 Demo
-
-<div align="center">
-
-### Desktop View
-![Desktop Demo](https://via.placeholder.com/800x450/667eea/ffffff?text=Desktop+Dashboard+Demo)
-
-### Mobile Responsive
-<img src="https://via.placeholder.com/300x600/764ba2/ffffff?text=Mobile+View" alt="Mobile Demo" width="250"/>
-
-</div>
-
----
-
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -92,7 +78,7 @@ Node.js 14+ | Firebase Account | Groq API Key (Free)
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/dsa-tracker.git
+git clone https://github.com/ayushgirigoswami/dsa-tracker.git
 
 # Navigate to project
 cd dsa-tracker
@@ -292,10 +278,11 @@ If this project helped you, please consider:
 
 <div align="center">
 
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/yourusername)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/yourprofile)
-[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/yourhandle)
-[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:your.email@example.com)
+### **Ayush Giri Goswami**
+
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ayushgirigoswami)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ayushgirigoswami/)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:ayushgirigoswami15@gmail.com)
 
 </div>
 
@@ -313,7 +300,7 @@ If this project helped you, please consider:
 
 <div align="center">
 
-### Made with ❤️ by Developers, for Developers
+### Made with ❤️ by [Ayush Giri Goswami](https://github.com/ayushgirigoswami)
 
 **[⬆ Back to Top](#-dsa-master-tracker)**
 
