@@ -7,20 +7,29 @@ export default async function handler(req, res) {
   
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-  
+
+  // --- THIS IS THE CRITICAL FIX ---
+  // 1. Get the key ONLY from the environment.
+  const apiKey = process.env.GROQ_API_KEY;
+
+  // 2. Add a check to see if the key is missing.
+  if (!apiKey) {
+    console.error('GROQ_API_KEY is not set in Vercel environment variables.');
+    return res.status(500).json({ error: 'Internal server error', message: 'API key not configured.' });
+  }
+  // --- END OF FIX ---
+
   try {
-    const { messages } = req.body;
+    const { messages, userContext } = req.body;
     
     if (!messages || !Array.isArray(messages)) {
       return res.status(400).json({ error: 'Invalid messages format' });
     }
-
-    const apiKey = process.env.GROQ_API_KEY || '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';
     
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
+        'Authorization': `Bearer ${apiKey}`, // Now uses the secure key
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
