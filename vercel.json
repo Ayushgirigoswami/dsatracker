@@ -1,14 +1,13 @@
 {
-  "functions": {
-    "api/groq.js": {
-      "memory": 1024,
-      "maxDuration": 10
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/api/groq",
-      "destination": "/api/groq.js"
-    }
+  "version": 2,
+  "builds": [
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "neetcode.html", "use": "@vercel/static" },
+    { "src": "striver.html", "use": "@vercel/static" },
+    { "src": "api/groq.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
