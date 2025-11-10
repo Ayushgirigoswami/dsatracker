@@ -2,7 +2,7 @@
 class NotificationManager {
   constructor() {
     this.emailJSPublicKey = 'TqqeRlUASBSfYe5H-'; // Your EmailJS public key
-    this.serviceID = 'service_z5b17lb';
+    this.serviceID = 'service_qzvmh8i';
     this.templateID = 'template_xwm1ysa';
     this.init();
   }
