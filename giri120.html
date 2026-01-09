@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giri 120 DSA Sheet | Tracker</title>
+    <link rel="stylesheet" href="giri120.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Sticky Header -->
+    <header class="app-header">
+        <div class="container header-content">
+            <div class="logo-area">
+                <a href="dsatracker.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
+                <h1>Giri 120 <span class="highlight">Sheet</span></h1>
+            </div>
+            <div class="progress-area">
+                <div class="progress-text">
+                    <span id="progress-count">0/120</span> Solved
+                    <span id="progress-percent">(0%)</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progress-fill"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Controls / Filters -->
+    <div class="container controls-section">
+        <div class="search-box">
+            <i class="fa-solid fa-search"></i>
+            <input type="text" id="search-input" placeholder="Search questions...">
+        </div>
+        <div class="filters">
+            <select id="topic-filter">
+                <option value="all">All Topics</option>
+                <!-- Populated by JS -->
+            </select>
+            <select id="difficulty-filter">
+                <option value="all">All Difficulties</option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+            </select>
+            <select id="status-filter">
+                <option value="all">All Status</option>
+                <option value="done">Solved</option>
+                <option value="pending">Pending</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container main-content" id="questions-container">
+        <!-- Accordions will be injected here -->
+    </main>
+
+    <!-- Note Modal -->
+    <div class="modal-overlay" id="note-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modal-title">Add Note</h3>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <textarea id="note-text" placeholder="Write your approach, time complexity, or thoughts here..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-note">Cancel</button>
+                <button class="btn btn-primary" id="save-note">Save Note</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="giri_data.js"></script>
+    <script src="giri120.js"></script>
+</body>
+</html>
