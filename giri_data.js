@@ -1,4 +1,4 @@
-const giriData = [
+window.giriData = [
   {
     "id": "1",
     "title": "Two Sum",
